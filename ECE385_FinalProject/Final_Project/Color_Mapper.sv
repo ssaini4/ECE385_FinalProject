@@ -42,6 +42,7 @@ parameter [0:42][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
     assign DistY = DrawY - BallY;
     assign Size = 20;
 	logic player_on;
+	logic screen;
 	logic boulder_on;
 	 logic[8:0] player_x = 300;
 	 logic[8:0] player_y = 200;
@@ -59,6 +60,16 @@ parameter [0:42][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 	 logic[8:0] grass_size_y = 20;
 	 logic[8:0] grass_addr;
 	 logic[7:0] grass_data;
+	 
+	 logic[8:0] poke_x = 200;
+	 logic[8:0] poke_y = 200;
+	 logic[8:0] poke_size_x = 30;
+	 logic[8:0] poke_size_y = 30;
+	 logic[8:0] poke_addr;
+	 logic[23:0] poke_data;
+	 
+	 font_pokemon (.addr(poke_addr), .data(poke_data));				
+	 assign screen = 1'b0;
 	 
 	 font_grass (.addr(grass_addr), .data(grass_data));
 	 
@@ -95,24 +106,30 @@ parameter [0:42][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
        
     always_ff @ (posedge Clk)
     begin:RGB_Display
-        if (player_on == 1'b1 && player_data_24bit != 24'hff260 && player_data_24bit !=  24'hff00) 
+		if (screen == 1'b1 && player_on == 1'b1 && player_data_24bit != 24'hff260 && player_data_24bit !=  24'hff00) 
         begin
             Red = player_data_24bit[23:16];
             Green =  player_data_24bit[15:8];
             Blue =  player_data_24bit[7:0];
         end       
-        else if (boulder_on == 1'b1 && boulder_data !=  24'hff00) 
+		else if (screen == 1'b1 && boulder_on == 1'b1 && boulder_data !=  24'hff00) 
 			begin
 				Red = palette_hex[boulder_data][23:16];
             Green = palette_hex[boulder_data][15:8];
             Blue = palette_hex[boulder_data][7:0];
-				end
-		else
+			end
+		else if (screen == 1'b0)
         begin 
-            Red = palette_hex[grass_data][23:16];
-            Green = palette_hex[grass_data][15:8];
-            Blue = palette_hex[grass_data][7:0];
-        end      
+				Red = poke_data[23:16];
+            Green = poke_data[15:8];
+            Blue = poke_data[7:0];
+        end
+		else
+		 begin
+			Red = 0;
+			Green = 0;
+			Blue = 0;
+		end
     end 
     
 endmodule
