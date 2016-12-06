@@ -89,6 +89,7 @@ parameter [0:42][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 				player_on = 1'b0;
 				boulder_on = 1'b0;
 				player_addr = 9'b0;
+				boulder_addr = ((DrawY%20*20) + DrawX%20)%399;
 				grass_addr = ((DrawY%grass_size_y*grass_size_y + DrawX%grass_size_x)%399);
 	     end
     end 

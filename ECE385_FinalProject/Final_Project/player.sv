@@ -4,8 +4,7 @@ module font_player (
 					 );
 	
 
-logic [9:0] player_X_Pos, player_X_Motion, player_Y_Pos, player_Y_Motion, player_Size;
-	 
+	logic [9:0] player_X_Pos, player_X_Motion, player_Y_Pos, player_Y_Motion, player_Size;
     parameter [9:0] player_X_Center=320;  // Center position on the X axis
     parameter [9:0] player_Y_Center=240;  // Center position on the Y axis
     parameter [9:0] player_X_Min=0;       // Leftmost point on the X axis
@@ -14,7 +13,7 @@ logic [9:0] player_X_Pos, player_X_Motion, player_Y_Pos, player_Y_Motion, player
     parameter [9:0] player_Y_Max=479;     // Bottommost point on the Y axis
     parameter [9:0] player_X_Step=1;      // Step size on the X axis
     parameter [9:0] player_Y_Step=1;      // Step size on the Y axis
-    assign player_Size = 10;  // assigns the value 4 as a 10-digit binary number, ie "0000000100"
+    assign player_Size = 7;  // assigns the value 4 as a 10-digit binary number, ie "0000000100"
    
     always_ff @ (posedge Reset or posedge frame_clk )
     begin: Move_player
@@ -27,13 +26,24 @@ logic [9:0] player_X_Pos, player_X_Motion, player_Y_Pos, player_Y_Motion, player
         end
            
         else 
-        begin 
-				 if ( (player_Y_Pos + player_Size) >= player_Y_Max )  // player is at the bottom edge, BOUNCE!
-					  begin
+        begin
+		  if ( (player_Y_Pos + player_Size) >= player_Y_Max 
+					)  // player is at the top edge, BOUNCE!
+				 begin
 					  player_Y_Motion <= (~ (player_Y_Step) + 1'b1);  // 2's complement.
 					  player_X_Motion <= 10'b0;
 					  end
-				 else if ( (player_Y_Pos - player_Size) <= player_Y_Min )  // player is at the top edge, BOUNCE!
+				else if (((player_Y_Pos+ player_Size+8 + player_Y_Step)>=60 && (player_Y_Pos - player_Size + 3 -player_Y_Step)<79&& (player_X_Pos+3 + player_X_Step)  >=0 && (player_X_Pos  - player_X_Step) <400 )||
+							((player_Y_Pos + player_Size+8+ player_Y_Step)>=200 && (player_Y_Pos-player_Size+ 3-player_Y_Step)<219 && (player_X_Pos+3 + player_X_Step) >=500 && (player_X_Pos- player_X_Step)	<640) ||
+							((player_Y_Pos + player_Size+8+ player_Y_Step) >= 300 && (player_Y_Pos-player_Size+ 3-player_Y_Step)<319 && (player_X_Pos+3 + player_X_Step) >= 0 && (player_X_Pos- player_X_Step) <300) ||
+							((player_Y_Pos+player_Size+8+ player_Y_Step) >= 340 &&(player_Y_Pos-player_Size+ 3-player_Y_Step)< 399 && (player_X_Pos+3 + player_X_Step) >=  440 && (player_X_Pos- player_X_Step) < 459) ||
+							((player_Y_Pos+player_Size+8+ player_Y_Step) >= 399 && (player_Y_Pos-player_Size+ 3-player_Y_Step)<419 && (player_X_Pos+3 + player_X_Step) >= 440 &&(player_X_Pos- player_X_Step) < 640))
+					begin
+					
+							player_Y_Motion <= 10'b0;
+							player_X_Motion <= 10'b0;				
+					end
+				 else if((player_Y_Pos - player_Size) <= player_Y_Min) 
 				 begin
 					  player_Y_Motion <= player_Y_Step;
 					  player_X_Motion <= 10'b0;
