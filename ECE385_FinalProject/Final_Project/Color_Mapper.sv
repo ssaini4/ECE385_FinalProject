@@ -77,32 +77,101 @@ parameter [0:42][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 		
 	 font_boulder (.addr(boulder_addr), .data(boulder_data));
 	
-    always_ff @ (posedge Clk)
-    begin:Ball_on_proc
-        if ( DrawX >= BallX && DrawX < BallX + player_size_x &&
-				DrawY >= BallY && DrawY < BallY + player_size_y)
+	always_ff @(posedge Clk)
+	begin:Game_scene
+		if (scene == 2'b00)
+		begin
+		end
+		else if (scene == 2'b01)
+		begin
+			if (DrawX >= BallX && DrawX < BallX + player_size_x && DrawY >= BallY && DrawY < BallY + player_size_y)
 			begin
-            player_on = 1'b1;
+				player_on = 1'b1;
 				player_addr = ((DrawY-BallY)*14 + DrawX-BallX+1);
-				grass_addr = ((DrawY%grass_size_y*grass_size_y + DrawX%grass_size_x)%399);
-        end
-		  else if ((DrawX >=0 && DrawX <400 && DrawY>=60 && DrawY <79) || (DrawX >=500 && DrawX <640 && DrawY >=200 && DrawY <219)
+				grass_addr = ((DrawY%grass_size_y*grass_size_y + Draw%grass_size_x) % 399);
+			end
+			else if ((DrawX >= 0 && DrawX < 400 && DrawY >= 60 && DrawY <79) || (DrawX >=500 && DrawX <640 && DrawY >=200 && DrawY <219)
 						|| (DrawX>=0 && DrawX <300 && DrawY>= 300 && DrawY < 319) || (DrawX>=440&& DrawX<459 && DrawY >=340 && DrawY<399)
 						|| (DrawX>=440 && DrawX< 640 && DrawY >=399 &&DrawY <419) 
 						)
 			begin
 				boulder_on = 1'b1;
-				boulder_addr = ((DrawY%20*20) + DrawX%20)%399;
-				grass_addr = ((DrawY%grass_size_y*grass_size_y + DrawX%grass_size_x)%399);
+				boulder_addr = ((DrawY%400) + DrawX%20)%399;
+				grass_addr = ((Draw%grass_size_y*grass_size_y + DrawX%grass_size_x)%399);
 			end
-		  else
-		  begin
+			else
+			begin
 				player_on = 1'b0;
 				boulder_on = 1'b0;
 				player_addr = 9'b0;
 				grass_addr = ((DrawY%grass_size_y*grass_size_y + DrawX%grass_size_x)%399);
-	     end
-    end 
+			end
+		end
+		else if (scene == 2'b10)
+		begin
+			if (DrawX >= PokeAX && DrawX < PokeAX + pokemon_size_x && DrawY >= PokeAY && DrawY < PokeAY + pokemon_size_y)
+			begin
+				pokemonA_on = 1'b1;
+				pokemonA_addr = ((DrawY%400) + DrawX%30)%899;
+			end
+			else if (DrawX >= PokeBX && DrawX < PokeBX + pokemon_size_x && DrawY >= PokeBY && DrawY < PokeBY + pokemon_size_y)
+			begin
+				pokemonB_on = 1'b1;
+				pokemonB_addr = ((DrawY%400) + DrawX%30)%899;
+			end
+			else if (DrawX >=RockAX && DrawX < RockAX + rock_size_x && DrawY >= RockAY && DrawY < RockAY + rock_size_y)
+			begin
+				rock_on = 1'b1;
+				rock_addr = ((DrawY%400) + DrawX%30)%899;
+			end
+			else if (DrawX >=RockBX && DrawX < RockBX + rock_size_x && DrawY >= RockBY && DrawY < RockBY + rock_size_y)
+			begin
+				rock_on = 1'b1;
+				rock_addr = ((DrawY%400) + DrawX%30)%899;
+			end
+			
+			else if (DrawX >=CutAX && DrawX < CutAX + cut_size_x && DrawY >= CutAY && DrawY < CutAY + rock_size_y)
+			begin
+				cut_on = 1'b1;
+				cut_addr = ((DrawY%400) + DrawX%30)%899;
+			end
+			else if (DrawX >=CutBX && DrawX < CutBX + cut_size_x && DrawY >= CutBY && DrawY < CutBY + cut_size_y)
+			begin
+				cut_on = 1'b1;
+				cut_addr = ((DrawY%400) + DrawX%30)%899;
+			end
+			
+			else if (DrawX >=PaperAX && DrawX < PaperAX + paper_size_x && DrawY >= PaperAY && DrawY < PaperAY + paper_size_y)
+			begin
+				paper_on = 1'b1;
+				paper_addr = ((DrawY%400) + DrawX%30)%899;
+			end
+			else if (DrawX >=PaperBX && DrawX < PaperBX + paper_size_x && DrawY >= PaperBY && DrawY < PaperBY + paper_size_y)
+			begin
+				paper_on = 1'b1;
+				paper_addr = ((DrawY%400) + DrawX%30)%899;
+			end
+			else if (DrawX >=RunAX && DrawX < RunAX + run_size_x && DrawY >= RunAY && DrawY < RunAY + run_size_y)
+			begin
+				run_on = 1'b1;
+				run_addr = ((DrawY%400) + DrawX%30)%899;
+			end
+			else if (DrawX >=RunBX && DrawX < RunBX + run_size_x && DrawY >= RunBY && DrawY < RunBY + run_size_y)
+			begin
+				run_on = 1'b1;
+				run_addr = ((DrawY%400) + DrawX%30)%899;
+			end
+			else if (DrawX >=executeX && DrawX < executeX + execute_size_x && DrawY >=executeY && DrawY < executeY + execute_size_y)
+			begin
+				execute_on = 1'b1;
+				execute = ((DrawY%400) + DrawX%30)%899;
+			else
+			begin
+			end
+		end
+		else
+		begin
+		end
        
     always_ff @ (posedge Clk)
     begin:RGB_Display
