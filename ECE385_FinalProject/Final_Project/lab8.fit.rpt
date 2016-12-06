@@ -1,5 +1,5 @@
 Fitter report for lab8
-Mon Dec 05 16:56:31 2016
+Mon Dec 05 23:07:38 2016
 Quartus II 64-Bit Version 15.0.0 Build 145 04/22/2015 SJ Full Version
 
 
@@ -76,7 +76,7 @@ agreement for further details.
 +----------------------------------------------------------------------------------+
 ; Fitter Summary                                                                   ;
 +------------------------------------+---------------------------------------------+
-; Fitter Status                      ; Successful - Mon Dec 05 16:56:31 2016       ;
+; Fitter Status                      ; Successful - Mon Dec 05 23:07:38 2016       ;
 ; Quartus II 64-Bit Version          ; 15.0.0 Build 145 04/22/2015 SJ Full Version ;
 ; Revision Name                      ; lab8                                        ;
 ; Top-level Entity Name              ; lab8                                        ;
@@ -162,12 +162,12 @@ agreement for further details.
 ; Number detected on machine ; 8           ;
 ; Maximum allowed            ; 4           ;
 ;                            ;             ;
-; Average used               ; 1.60        ;
+; Average used               ; 1.78        ;
 ; Maximum used               ; 4           ;
 ;                            ;             ;
 ; Usage by Processor         ; % Time Used ;
 ;     Processor 1            ; 100.0%      ;
-;     Processors 2-4         ;  20.0%      ;
+;     Processors 2-4         ;  26.1%      ;
 ;     Processors 5-8         ;   0.0%      ;
 +----------------------------+-------------+
 
@@ -1042,7 +1042,7 @@ agreement for further details.
 +--------------+
 ; Pin-Out File ;
 +--------------+
-The pin-out file can be found in C:/ece385/ECE385_FinalProject/ECE385_FinalProject/Final_Project/lab8.pin.
+The pin-out file can be found in C:/Users/Karan/Desktop/ECE385_FinalProject/ECE385_FinalProject/Final_Project/lab8.pin.
 
 
 +----------------------------------------------------------------------------+
@@ -3617,7 +3617,6 @@ Info (176353): Automatically promoted node nios_system:nios_system|nios_system_s
 Info (176233): Starting register packing
 Warning (176250): Ignoring invalid fast I/O register assignments. See the Ignored Assignments panel in the Fitter Compilation Report for more information.
 Warning (176251): Ignoring some wildcard destinations of fast I/O register assignments
-    Info (176252): Wildcard assignment "Fast Output Enable Register=ON" to "oe" matches multiple destination nodes -- some destinations are not valid targets for this assignment
     Info (176252): Wildcard assignment "Fast Output Register=ON" to "m_data[9]" matches multiple destination nodes -- some destinations are not valid targets for this assignment
     Info (176252): Wildcard assignment "Fast Output Register=ON" to "m_data[8]" matches multiple destination nodes -- some destinations are not valid targets for this assignment
     Info (176252): Wildcard assignment "Fast Output Register=ON" to "m_data[7]" matches multiple destination nodes -- some destinations are not valid targets for this assignment
@@ -3653,6 +3652,7 @@ Warning (176251): Ignoring some wildcard destinations of fast I/O register assig
     Info (176252): Wildcard assignment "Fast Output Register=ON" to "m_cmd[2]" matches multiple destination nodes -- some destinations are not valid targets for this assignment
     Info (176252): Wildcard assignment "Fast Output Register=ON" to "m_cmd[1]" matches multiple destination nodes -- some destinations are not valid targets for this assignment
     Info (176252): Wildcard assignment "Fast Output Register=ON" to "m_cmd[0]" matches multiple destination nodes -- some destinations are not valid targets for this assignment
+    Info (176252): Wildcard assignment "Fast Output Enable Register=ON" to "oe" matches multiple destination nodes -- some destinations are not valid targets for this assignment
 Info (176235): Finished register packing
     Extra Info (176218): Packed 8 registers into blocks of type EC
     Extra Info (176218): Packed 32 registers into blocks of type I/O Input Buffer
@@ -4050,7 +4050,7 @@ Warning (15705): Ignored locations or region assignments to the following nodes
     Warning (15706): Node "UART_RTS" is assigned to location or region, but does not exist in design
     Warning (15706): Node "UART_RXD" is assigned to location or region, but does not exist in design
     Warning (15706): Node "UART_TXD" is assigned to location or region, but does not exist in design
-Info (171121): Fitter preparation operations ending: elapsed time is 00:00:05
+Info (171121): Fitter preparation operations ending: elapsed time is 00:00:06
 Info (14896): Fitter has disabled Advanced Physical Optimization because it is not supported for the current family.
 Info (170189): Fitter placement preparation operations beginning
 Info (170190): Fitter placement preparation operations ending: elapsed time is 00:00:01
@@ -4064,24 +4064,24 @@ Info (170194): Fitter routing operations ending: elapsed time is 00:00:02
 Info (170199): The Fitter performed an Auto Fit compilation.  Optimizations were skipped to reduce compilation time.
     Info (170201): Optimizations that may affect the design's routability were skipped
     Info (170200): Optimizations that may affect the design's timing were skipped
-Info (11888): Total time spent on timing analysis during the Fitter is 0.57 seconds.
+Info (11888): Total time spent on timing analysis during the Fitter is 0.66 seconds.
 Info (334003): Started post-fitting delay annotation
 Info (334004): Delay annotation completed successfully
 Info (334003): Started post-fitting delay annotation
 Info (334004): Delay annotation completed successfully
-Info (11218): Fitter post-fit operations ending: elapsed time is 00:00:02
+Info (11218): Fitter post-fit operations ending: elapsed time is 00:00:03
 Warning (171167): Found invalid Fitter assignments. See the Ignored Assignments panel in the Fitter Compilation Report for more information.
-Info (144001): Generated suppressed messages file C:/ece385/ECE385_FinalProject/ECE385_FinalProject/Final_Project/lab8.fit.smsg
+Info (144001): Generated suppressed messages file C:/Users/Karan/Desktop/ECE385_FinalProject/ECE385_FinalProject/Final_Project/lab8.fit.smsg
 Info: Quartus II 64-Bit Fitter was successful. 0 errors, 405 warnings
-    Info: Peak virtual memory: 1688 megabytes
-    Info: Processing ended: Mon Dec 05 16:56:33 2016
-    Info: Elapsed time: 00:00:22
-    Info: Total CPU time (on all processors): 00:00:28
+    Info: Peak virtual memory: 1604 megabytes
+    Info: Processing ended: Mon Dec 05 23:07:39 2016
+    Info: Elapsed time: 00:00:25
+    Info: Total CPU time (on all processors): 00:00:34
 
 
 +----------------------------+
 ; Fitter Suppressed Messages ;
 +----------------------------+
-The suppressed messages can be found in C:/ece385/ECE385_FinalProject/ECE385_FinalProject/Final_Project/lab8.fit.smsg.
+The suppressed messages can be found in C:/Users/Karan/Desktop/ECE385_FinalProject/ECE385_FinalProject/Final_Project/lab8.fit.smsg.
 
 

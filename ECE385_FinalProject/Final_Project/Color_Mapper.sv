@@ -34,7 +34,7 @@ module  color_mapper ( input        [9:0] BallX, BallY, DrawX, DrawY, Ball_size,
      this single line is quite powerful descriptively, it causes the synthesis tool to use up three
      of the 12 available multipliers on the chip!  Since the multiplicants are required to be signed,
 	  we have to first cast them from logic to int (signed by default) before they are multiplied). */
-parameter [0:42][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA344,24'h62A643,24'hFF0000,24'h2F0200,24'h3A0300,24'h4C0300,24'h5E3017,24'hA15622,24'h98531A,24'h97490C,24'h904709,24'h8E4008,24'h632300,24'h672600,24'h943908,24'hBD6116,24'h8C4505,24'h963C01, 24'hF83800, 24'hF0D0B0, 24'h503000, 24'hFFE0A8, 24'h0058F8, 24'hFCFCFC, 24'hBCBCBC, 24'hA40000, 24'hD82800, 24'hFC7460, 24'hFCBCB0, 24'hF0BC3C, 24'hAEACAE, 24'h363301, 24'h6C6C01, 24'hBBBD00, 24'h88D500, 24'h398802, 24'h65B0FF, 24'h155ED8, 24'h800080, 24'h24188A
+parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA344,24'h62A643,24'hFF0000,24'h2F0200,24'h3A0300,24'h4C0300,24'h5E3017,24'hA15622,24'h98531A,24'h97490C,24'h904709,24'h8E4008,24'h632300,24'h672600,24'h943908,24'hBD6116,24'h8C4505,24'h963C01, 24'hF83800, 24'hF0D0B0, 24'h503000, 24'hFFE0A8, 24'h0058F8, 24'hFCFCFC, 24'hBCBCBC, 24'hA40000, 24'hD82800, 24'hFC7460, 24'hFCBCB0, 24'hF0BC3C, 24'hAEACAE, 24'h363301, 24'h6C6C01, 24'hBBBD00, 24'h88D500, 24'h398802, 24'h65B0FF, 24'h155ED8, 24'h800080, 24'h24188A,24'hFFFFFF
 };
 
     int DistX, DistY, Size;
@@ -42,7 +42,7 @@ parameter [0:42][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
     assign DistY = DrawY - BallY;
     assign Size = 20;
 	logic player_on;
-	logic screen;
+	logic[1:0] scene;
 	logic boulder_on;
 	 logic[8:0] player_x = 300;
 	 logic[8:0] player_y = 200;
@@ -68,8 +68,74 @@ parameter [0:42][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 	 logic[8:0] poke_addr;
 	 logic[23:0] poke_data;
 	 
+	 
+	 logic pokemonA_on;
+	 logic pokemonB_on;
+	 logic[8:0] pokemon_size_x = 30;
+	 logic[8:0] pokemon_size_y = 30;
+	 logic[8:0] pokemonA_addr;
+	 logic[8:0] pokemonB_addr;
+	 assign PokeAX = 50;
+	 assign PokeAY = 50;
+	 assign PokeBX = 150;
+	 assign PokeBY = 50;
+	
+	logic[9:0] RockAX, RockAY, RockBX, RockBY, PokeAX,PokeAY, PokeBX, PokeBY, PaperAX, PaperAY, PaperBX, PaperBY, CutAX, CutAY, CutBX, CutBY, RunAX, RunAY, RunBX, RunBY, executeX, executeY;
+	logic[8:0] rock_size_x = 20;
+	logic[8:0] rock_size_y = 20;
+	logic[8:0] rock_addr;
+	logic[7:0] rock_data;
+	logic rock_on;
+	assign RockAX = 100;
+	assign RockAY = 100;
+	assign RockBX = 300;
+	assign RockBY = 100;
+	
+	logic[8:0] cut_size_x = 20;
+	logic[8:0] cut_size_y = 20;
+	logic[8:0] cut_addr;
+	logic[7:0] cut_data;
+	logic cut_on;
+	assign cutAX = 100;
+	assign cutAY = 200;
+	assign cutBX = 300;
+	assign cutBY = 200;
+	
+	logic[8:0] paper_size_x = 20;
+	logic[8:0] paper_size_y = 20;
+	logic[8:0] paper_addr;
+	logic[7:0] paper_data;
+	logic paper_on;
+	assign paperAX = 100;
+	assign paperAY = 300;
+	assign paperBX = 300;
+	assign paperBY = 300;
+	
+	logic[8:0] run_size_x = 20;
+	logic[8:0] run_size_y = 20;
+	logic[8:0] run_addr;
+	logic[7:0] run_data;
+	logic run_on;
+	assign runAX = 100;
+	assign runAY = 350;
+	assign runBX = 300;
+	assign runBY = 350;
+	
+	logic[8:0] execute_size_x = 20;
+	logic[8:0] execute_size_y = 20;
+	logic[8:0] execute_addr;
+	logic[7:0] execute_data;
+	logic execute_on;
+	assign executeX = 300;
+	assign executeY = 400;
+	
+	font_rock (.addr(rock_addr), .data(rock_data));
+	font_cut (.addr(cut_addr), .data(cut_data));
+	font_paper (.addr(paper_addr), .data(paper_data));
+	font_run (.addr(run_addr), .data(run_data));
+	font_execute (.addr(execute_addr), .data(execute_data));
 	 font_pokemon (.addr(poke_addr), .data(poke_data));				
-	 assign screen = 1'b0;
+	 assign screen = 2'b10;
 	 
 	 font_grass (.addr(grass_addr), .data(grass_data));
 	 
@@ -88,7 +154,7 @@ parameter [0:42][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 			begin
 				player_on = 1'b1;
 				player_addr = ((DrawY-BallY)*14 + DrawX-BallX+1);
-				grass_addr = ((DrawY%grass_size_y*grass_size_y + Draw%grass_size_x) % 399);
+				grass_addr = ((DrawY%grass_size_y*grass_size_y + DrawX%grass_size_x) % 399);
 			end
 			else if ((DrawX >= 0 && DrawX < 400 && DrawY >= 60 && DrawY <79) || (DrawX >=500 && DrawX <640 && DrawY >=200 && DrawY <219)
 						|| (DrawX>=0 && DrawX <300 && DrawY>= 300 && DrawY < 319) || (DrawX>=440&& DrawX<459 && DrawY >=340 && DrawY<399)
@@ -97,7 +163,7 @@ parameter [0:42][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 			begin
 				boulder_on = 1'b1;
 				boulder_addr = ((DrawY%400) + DrawX%20)%399;
-				grass_addr = ((Draw%grass_size_y*grass_size_y + DrawX%grass_size_x)%399);
+				grass_addr = ((DrawY%grass_size_y*grass_size_y + DrawX%grass_size_x)%399);
 			end
 			else
 			begin
@@ -112,86 +178,88 @@ parameter [0:42][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 			if (DrawX >= PokeAX && DrawX < PokeAX + pokemon_size_x && DrawY >= PokeAY && DrawY < PokeAY + pokemon_size_y)
 			begin
 				pokemonA_on = 1'b1;
-				pokemonA_addr = ((DrawY%400) + DrawX%30)%899;
+				pokemonA_addr = ((DrawY%400) + DrawX%20)%899;
 			end
 			else if (DrawX >= PokeBX && DrawX < PokeBX + pokemon_size_x && DrawY >= PokeBY && DrawY < PokeBY + pokemon_size_y)
 			begin
 				pokemonB_on = 1'b1;
-				pokemonB_addr = ((DrawY%400) + DrawX%30)%899;
+				pokemonB_addr = ((DrawY%400) + DrawX%20)%899;
 			end
 			else if (DrawX >=RockAX && DrawX < RockAX + rock_size_x && DrawY >= RockAY && DrawY < RockAY + rock_size_y)
 			begin
 				rock_on = 1'b1;
-				rock_addr = ((DrawY%400) + DrawX%30)%899;
+				rock_addr = ((DrawY%400) + DrawX%20)%899;
 			end
 			else if (DrawX >=RockBX && DrawX < RockBX + rock_size_x && DrawY >= RockBY && DrawY < RockBY + rock_size_y)
 			begin
 				rock_on = 1'b1;
-				rock_addr = ((DrawY%400) + DrawX%30)%899;
+				rock_addr = ((DrawY%400) + DrawX%20)%899;
 			end
 			
 			else if (DrawX >=CutAX && DrawX < CutAX + cut_size_x && DrawY >= CutAY && DrawY < CutAY + rock_size_y)
 			begin
 				cut_on = 1'b1;
-				cut_addr = ((DrawY%400) + DrawX%30)%899;
+				cut_addr = ((DrawY%400) + DrawX%20)%899;
 			end
 			else if (DrawX >=CutBX && DrawX < CutBX + cut_size_x && DrawY >= CutBY && DrawY < CutBY + cut_size_y)
 			begin
 				cut_on = 1'b1;
-				cut_addr = ((DrawY%400) + DrawX%30)%899;
+				cut_addr = ((DrawY%400) + DrawX%20)%899;
 			end
 			
 			else if (DrawX >=PaperAX && DrawX < PaperAX + paper_size_x && DrawY >= PaperAY && DrawY < PaperAY + paper_size_y)
 			begin
 				paper_on = 1'b1;
-				paper_addr = ((DrawY%400) + DrawX%30)%899;
+				paper_addr = ((DrawY%400) + DrawX%20)%899;
 			end
 			else if (DrawX >=PaperBX && DrawX < PaperBX + paper_size_x && DrawY >= PaperBY && DrawY < PaperBY + paper_size_y)
 			begin
 				paper_on = 1'b1;
-				paper_addr = ((DrawY%400) + DrawX%30)%899;
+				paper_addr = ((DrawY%400) + DrawX%20);
 			end
 			else if (DrawX >=RunAX && DrawX < RunAX + run_size_x && DrawY >= RunAY && DrawY < RunAY + run_size_y)
 			begin
 				run_on = 1'b1;
-				run_addr = ((DrawY%400) + DrawX%30)%899;
+				run_addr = ((DrawY%400) + DrawX%20);
 			end
 			else if (DrawX >=RunBX && DrawX < RunBX + run_size_x && DrawY >= RunBY && DrawY < RunBY + run_size_y)
 			begin
 				run_on = 1'b1;
-				run_addr = ((DrawY%400) + DrawX%30)%899;
+				run_addr = ((DrawY%400) + DrawX%20);
 			end
 			else if (DrawX >=executeX && DrawX < executeX + execute_size_x && DrawY >=executeY && DrawY < executeY + execute_size_y)
 			begin
 				execute_on = 1'b1;
-				execute = ((DrawY%400) + DrawX%30)%899;
+				execute_addr = ((DrawY%400) + DrawX%20);
+			end
 			else
 			begin
 			end
-		end
+			end
 		else
 		begin
 		end
+	end
        
     always_ff @ (posedge Clk)
     begin:RGB_Display
-		if (screen == 1'b1 && player_on == 1'b1 && player_data_24bit != 24'hff260 && player_data_24bit !=  24'hff00) 
+		if (screen == 2'b01 && player_on == 1'b1 && player_data_24bit != 24'hff260 && player_data_24bit !=  24'hff00) 
         begin
             Red = player_data_24bit[23:16];
             Green =  player_data_24bit[15:8];
             Blue =  player_data_24bit[7:0];
-        end       
-		else if (screen == 1'b1 && boulder_on == 1'b1 && boulder_data !=  24'hff00) 
+        end      
+		else if (screen == 2'b01 && boulder_on == 1'b1 && boulder_data !=  24'hff00) 
 			begin
 				Red = palette_hex[boulder_data][23:16];
             Green = palette_hex[boulder_data][15:8];
             Blue = palette_hex[boulder_data][7:0];
 			end
-		else if (screen == 1'b0)
+		else if (screen == 2'b10 && rock_on == 1'b1)
         begin 
-				Red = poke_data[23:16];
-            Green = poke_data[15:8];
-            Blue = poke_data[7:0];
+				Red = palette_hex[rock_data][23:16];
+            Green = palette_hex[rock_data][15:8];
+            Blue = palette_hex[rock_data][7:0];
         end
 		else
 		 begin
