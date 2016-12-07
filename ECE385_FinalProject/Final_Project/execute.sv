@@ -1,4 +1,4 @@
-module font_execute ( input [9:0] addr, output [7:0] data);
+module font_execute ( input [11:0] addr, output [7:0] data);
 					 
 parameter DATA_WIDTH = 8;
 

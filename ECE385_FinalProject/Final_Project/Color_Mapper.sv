@@ -54,15 +54,12 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 	 
 	 logic[8:0] boulder_addr;
 	 logic[7:0] boulder_data;
-	 logic[8:0] grass_x = 200;
-	 logic[8:0] grass_y = 200;
+
 	 logic[8:0] grass_size_x = 20;
 	 logic[8:0] grass_size_y = 20;
 	 logic[8:0] grass_addr;
 	 logic[7:0] grass_data;
 	 
-	 logic[8:0] poke_x = 200;
-	 logic[8:0] poke_y = 200;
 	 logic[8:0] poke_size_x = 30;
 	 logic[8:0] poke_size_y = 30;
 	 logic[8:0] poke_addr;
@@ -75,20 +72,21 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 	 logic[8:0] pokemon_size_y = 30;
 	 logic[8:0] pokemonA_addr;
 	 logic[8:0] pokemonB_addr;
-	 assign PokeAX = 50;
-	 assign PokeAY = 50;
-	 assign PokeBX = 150;
-	 assign PokeBY = 50;
+	 
 	
-	logic[9:0] RockAX, RockAY, RockBX, RockBY, PokeAX,PokeAY, PokeBX, PokeBY, PaperAX, PaperAY, PaperBX, PaperBY, CutAX, CutAY, CutBX, CutBY, RunAX, RunAY, RunBX, RunBY, executeX, executeY;
+	logic[9:0] RockAX, RockAY, RockBX, RockBY, PokeAX,PokeAY, PokeBX, PokeBY, paperAX, paperAY, paperBX, paperBY, cutAX, cutAY, cutBX, cutBY, runAX, runAY, runBX, runBY, executeX, executeY;
 	logic[8:0] rock_size_x = 20;
 	logic[8:0] rock_size_y = 20;
 	logic[8:0] rock_addr;
 	logic[7:0] rock_data;
+	assign PokeAX = 90;
+	assign PokeAY = 210;
+	assign PokeBX = 510;
+	assign PokeBY = 210;
 	logic rock_on;
-	assign RockAX = 100;
+	assign RockAX = 200;
 	assign RockAY = 100;
-	assign RockBX = 300;
+	assign RockBX = 400;
 	assign RockBY = 100;
 	
 	logic[8:0] cut_size_x = 20;
@@ -96,9 +94,9 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 	logic[8:0] cut_addr;
 	logic[7:0] cut_data;
 	logic cut_on;
-	assign cutAX = 100;
+	assign cutAX = 200;
 	assign cutAY = 200;
-	assign cutBX = 300;
+	assign cutBX = 400;
 	assign cutBY = 200;
 	
 	logic[8:0] paper_size_x = 20;
@@ -106,9 +104,9 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 	logic[8:0] paper_addr;
 	logic[7:0] paper_data;
 	logic paper_on;
-	assign paperAX = 100;
+	assign paperAX = 200;
 	assign paperAY = 300;
-	assign paperBX = 300;
+	assign paperBX = 400;
 	assign paperBY = 300;
 	
 	logic[8:0] run_size_x = 20;
@@ -116,26 +114,27 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 	logic[8:0] run_addr;
 	logic[7:0] run_data;
 	logic run_on;
-	assign runAX = 100;
-	assign runAY = 350;
-	assign runBX = 300;
-	assign runBY = 350;
+	assign runAX = 200;
+	assign runAY = 400;
+	assign runBX = 400;
+	assign runBY = 400;
+
 	
-	logic[8:0] execute_size_x = 20;
+	logic[8:0] execute_size_x = 60;
 	logic[8:0] execute_size_y = 20;
-	logic[8:0] execute_addr;
+	logic[11:0] execute_addr;
 	logic[7:0] execute_data;
 	logic execute_on;
-	assign executeX = 300;
-	assign executeY = 400;
+	assign executeX = 280;
+	assign executeY = 250;
 	
 	font_rock (.addr(rock_addr), .data(rock_data));
 	font_cut (.addr(cut_addr), .data(cut_data));
 	font_paper (.addr(paper_addr), .data(paper_data));
 	font_run (.addr(run_addr), .data(run_data));
 	font_execute (.addr(execute_addr), .data(execute_data));
-	 font_pokemon (.addr(poke_addr), .data(poke_data));				
-	 assign screen = 2'b10;
+	 font_poke (.addr(pokemonA_addr), .data(poke_data));				
+	 assign scene = 2'b10;
 	 
 	 font_grass (.addr(grass_addr), .data(grass_data));
 	 
@@ -145,128 +144,175 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 	
 	always_ff @(posedge Clk)
 	begin:Game_scene
-		if (scene == 2'b00)
-		begin
-		end
-		else if (scene == 2'b01)
-		begin
-			if (DrawX >= BallX && DrawX < BallX + player_size_x && DrawY >= BallY && DrawY < BallY + player_size_y)
-			begin
-				player_on = 1'b1;
-				player_addr = ((DrawY-BallY)*14 + DrawX-BallX+1);
-				grass_addr = ((DrawY%grass_size_y*grass_size_y + DrawX%grass_size_x) % 399);
-			end
-			else if ((DrawX >= 0 && DrawX < 400 && DrawY >= 60 && DrawY <79) || (DrawX >=500 && DrawX <640 && DrawY >=200 && DrawY <219)
-						|| (DrawX>=0 && DrawX <300 && DrawY>= 300 && DrawY < 319) || (DrawX>=440&& DrawX<459 && DrawY >=340 && DrawY<399)
-						|| (DrawX>=440 && DrawX< 640 && DrawY >=399 &&DrawY <419) 
-						)
-			begin
-				boulder_on = 1'b1;
-				boulder_addr = ((DrawY%400) + DrawX%20)%399;
-				grass_addr = ((DrawY%grass_size_y*grass_size_y + DrawX%grass_size_x)%399);
-			end
-			else
-			begin
-				player_on = 1'b0;
-				boulder_on = 1'b0;
-				player_addr = 9'b0;
-				grass_addr = ((DrawY%grass_size_y*grass_size_y + DrawX%grass_size_x)%399);
-			end
-		end
-		else if (scene == 2'b10)
-		begin
-			if (DrawX >= PokeAX && DrawX < PokeAX + pokemon_size_x && DrawY >= PokeAY && DrawY < PokeAY + pokemon_size_y)
-			begin
-				pokemonA_on = 1'b1;
-				pokemonA_addr = ((DrawY%400) + DrawX%20)%899;
-			end
-			else if (DrawX >= PokeBX && DrawX < PokeBX + pokemon_size_x && DrawY >= PokeBY && DrawY < PokeBY + pokemon_size_y)
-			begin
-				pokemonB_on = 1'b1;
-				pokemonB_addr = ((DrawY%400) + DrawX%20)%899;
-			end
-			else if (DrawX >=RockAX && DrawX < RockAX + rock_size_x && DrawY >= RockAY && DrawY < RockAY + rock_size_y)
-			begin
-				rock_on = 1'b1;
-				rock_addr = ((DrawY%400) + DrawX%20)%899;
-			end
-			else if (DrawX >=RockBX && DrawX < RockBX + rock_size_x && DrawY >= RockBY && DrawY < RockBY + rock_size_y)
-			begin
-				rock_on = 1'b1;
-				rock_addr = ((DrawY%400) + DrawX%20)%899;
-			end
-			
-			else if (DrawX >=CutAX && DrawX < CutAX + cut_size_x && DrawY >= CutAY && DrawY < CutAY + rock_size_y)
-			begin
-				cut_on = 1'b1;
-				cut_addr = ((DrawY%400) + DrawX%20)%899;
-			end
-			else if (DrawX >=CutBX && DrawX < CutBX + cut_size_x && DrawY >= CutBY && DrawY < CutBY + cut_size_y)
-			begin
-				cut_on = 1'b1;
-				cut_addr = ((DrawY%400) + DrawX%20)%899;
-			end
-			
-			else if (DrawX >=PaperAX && DrawX < PaperAX + paper_size_x && DrawY >= PaperAY && DrawY < PaperAY + paper_size_y)
-			begin
-				paper_on = 1'b1;
-				paper_addr = ((DrawY%400) + DrawX%20)%899;
-			end
-			else if (DrawX >=PaperBX && DrawX < PaperBX + paper_size_x && DrawY >= PaperBY && DrawY < PaperBY + paper_size_y)
-			begin
-				paper_on = 1'b1;
-				paper_addr = ((DrawY%400) + DrawX%20);
-			end
-			else if (DrawX >=RunAX && DrawX < RunAX + run_size_x && DrawY >= RunAY && DrawY < RunAY + run_size_y)
-			begin
-				run_on = 1'b1;
-				run_addr = ((DrawY%400) + DrawX%20);
-			end
-			else if (DrawX >=RunBX && DrawX < RunBX + run_size_x && DrawY >= RunBY && DrawY < RunBY + run_size_y)
-			begin
-				run_on = 1'b1;
-				run_addr = ((DrawY%400) + DrawX%20);
-			end
-			else if (DrawX >=executeX && DrawX < executeX + execute_size_x && DrawY >=executeY && DrawY < executeY + execute_size_y)
-			begin
-				execute_on = 1'b1;
-				execute_addr = ((DrawY%400) + DrawX%20);
-			end
-			else
-			begin
-			end
-			end
-		else
-		begin
-		end
+		case (scene)
+			2'b01:
+				begin
+					if (DrawX >= BallX && DrawX < BallX + player_size_x && DrawY >= BallY && DrawY < BallY + player_size_y)
+					begin
+						player_on = 1'b1;
+						player_addr = ((DrawY-BallY)*14 + DrawX-BallX+1);
+						grass_addr = ((DrawY%grass_size_y*grass_size_y + DrawX%grass_size_x) % 399);
+					end
+					else if ((DrawX >= 0 && DrawX < 400 && DrawY >= 60 && DrawY <79) || (DrawX >=500 && DrawX <640 && DrawY >=200 && DrawY <219)
+								|| (DrawX>=0 && DrawX <300 && DrawY>= 300 && DrawY < 319) || (DrawX>=440&& DrawX<459 && DrawY >=340 && DrawY<399)
+								|| (DrawX>=440 && DrawX< 640 && DrawY >=399 &&DrawY <419) 
+								)
+					begin
+						boulder_on = 1'b1;
+						boulder_addr = ((DrawY%20*20) + DrawX%20)%399;
+						grass_addr = ((DrawY%grass_size_y*grass_size_y + DrawX%grass_size_x)%399);
+					end
+					else
+					begin
+						player_on = 1'b0;
+						boulder_on = 1'b0;
+						player_addr = 9'b0;
+						grass_addr = ((DrawY%grass_size_y*grass_size_y + DrawX%grass_size_x)%399);
+					end
+				end
+			2'b10:
+				begin
+						cut_on <= 1'b0;
+						rock_on <= 1'b0;
+						paper_on <= 1'b0;
+						run_on <= 1'b0;
+						execute_on <= 1'b0;
+						pokemonA_on <= 1'b0;
+						pokemonB_on <= 1'b0;
+					if (DrawX >= PokeAX && DrawX < (PokeAX + pokemon_size_x )&& DrawY >= PokeAY && DrawY < (PokeAY + pokemon_size_y))
+					begin
+						pokemonA_on <= 1'b1;
+						pokemonA_addr <= ((DrawY%30)*30 + DrawX%30)%899;
+					end
+					if (DrawX >= PokeBX && DrawX < (PokeBX + pokemon_size_x) && DrawY >= PokeBY && DrawY < (PokeBY + pokemon_size_y))
+					begin
+						pokemonB_on <= 1'b1;
+						pokemonB_addr <= ((DrawY%30*30) + DrawX%20)%899;
+					end
+					if (DrawX >=RockAX && DrawX < (RockAX + rock_size_x) && DrawY >= RockAY && DrawY < (RockAY + rock_size_y))
+					begin
+						rock_on <= 1'b1;
+						rock_addr <= ((DrawY-RockAY)*20 + (DrawX-RockAX));
+					end
+					if (DrawX >=RockBX && DrawX < (RockBX + rock_size_x) && DrawY >= RockBY && DrawY < (RockBY + rock_size_y))
+					begin
+						rock_on <= 1'b1;
+						rock_addr <= ((DrawY-RockBY)*20 + (DrawX-RockBX));
+					end
+					
+					if (DrawX >=cutAX && DrawX < (cutAX + cut_size_x) && DrawY >= cutAY && DrawY < (cutAY + rock_size_y))
+					begin
+						cut_on <= 1'b1;
+						cut_addr <= ((DrawY-cutAY)*20 + (DrawX-cutAX));
+					end
+					if (DrawX >=cutBX && DrawX < (cutBX + cut_size_x) && DrawY >= cutBY && DrawY < (cutBY + cut_size_y))
+					begin
+						cut_on <= 1'b1;
+						cut_addr <= ((DrawY-cutBY)*20 + (DrawX-cutBX));
+					end
+					
+					if (DrawX >=paperAX && DrawX < (paperAX + paper_size_x) && DrawY >= paperAY && DrawY < (paperAY + paper_size_y))
+					begin
+						paper_on <= 1'b1;
+						paper_addr <= ((DrawY-paperAY)*20 + DrawX-paperAX);
+					end
+					if (DrawX >=paperBX && DrawX < (paperBX + paper_size_x) && DrawY >= paperBY && DrawY < (paperBY + paper_size_y))
+					begin
+						paper_on <= 1'b1;
+						paper_addr <= ((DrawY-paperBY)*20 + DrawX-paperBX);
+					end
+					if (DrawX >=runAX && DrawX < (runAX + run_size_x) && DrawY >= runAY && DrawY < (runAY + run_size_y))
+					begin
+						run_on <= 1'b1;
+						run_addr <= (DrawY-runAY)*20 + DrawX-runAX;
+					end
+					if (DrawX >=runBX && DrawX < (runBX + run_size_x) && DrawY >= runBY && DrawY < (runBY + run_size_y))
+					begin
+						run_on <= 1'b1;
+						run_addr <= (DrawY-runBY)*20 + DrawX-runBX;
+					end
+					if (DrawX >=executeX && DrawX < (executeX + execute_size_x )&& DrawY >=executeY && DrawY < (executeY + execute_size_y))
+					begin
+						execute_on <= 1'b1;
+						execute_addr <= ((DrawY-executeY)*20 + DrawX-executeX);
+					end
+				end	
+	endcase
 	end
        
     always_ff @ (posedge Clk)
     begin:RGB_Display
-		if (screen == 2'b01 && player_on == 1'b1 && player_data_24bit != 24'hff260 && player_data_24bit !=  24'hff00) 
-        begin
-            Red = player_data_24bit[23:16];
-            Green =  player_data_24bit[15:8];
-            Blue =  player_data_24bit[7:0];
-        end      
-		else if (screen == 2'b01 && boulder_on == 1'b1 && boulder_data !=  24'hff00) 
-			begin
-				Red = palette_hex[boulder_data][23:16];
-            Green = palette_hex[boulder_data][15:8];
-            Blue = palette_hex[boulder_data][7:0];
-			end
-		else if (screen == 2'b10 && rock_on == 1'b1)
-        begin 
-				Red = palette_hex[rock_data][23:16];
-            Green = palette_hex[rock_data][15:8];
-            Blue = palette_hex[rock_data][7:0];
-        end
-		else
-		 begin
-			Red = 0;
-			Green = 0;
-			Blue = 0;
-		end
+		case(scene)
+			2'b01: 
+				  begin
+						if(player_on == 1'b1 && player_data_24bit != 24'hff260 && player_data_24bit !=  24'hff00)
+						begin
+							Red <= player_data_24bit[23:16];
+							Green <=  player_data_24bit[15:8];
+							Blue <=  player_data_24bit[7:0];
+						end
+						else if(boulder_on == 1'b1 && boulder_data !=  24'hff00)
+						begin
+							Red <= palette_hex[boulder_data][23:16];
+							Green <= palette_hex[boulder_data][15:8];
+							Blue <= palette_hex[boulder_data][7:0];
+						end
+						else
+						begin 
+							Red <= palette_hex[grass_data][23:16];
+							Green <= palette_hex[grass_data][15:8];
+							Blue <= palette_hex[grass_data][7:0];
+						end
+				  end      
+			2'b10:
+			  begin
+					Red <= 8'hff;
+					Green<= 8'hff;
+					Blue <= 8'hff;
+					if (rock_on == 1'b1)
+					begin
+						Red <= palette_hex[rock_data][23:16];
+						Green<= palette_hex[rock_data][15:8];
+						Blue <= palette_hex[rock_data][7:0];
+					end
+					if(cut_on == 1'b1)
+					begin
+						Red <= palette_hex[cut_data][23:16];
+						Green<= palette_hex[cut_data][15:8];
+						Blue <= palette_hex[cut_data][7:0];
+					end
+					if( paper_on == 1'b1)
+					begin
+						Red <= palette_hex[paper_data][23:16];
+						Green <= palette_hex[paper_data][15:8];
+						Blue <= palette_hex[paper_data][7:0];
+					end
+					if( run_on == 1'b1)
+					begin
+						Red <= palette_hex[run_data][23:16];
+						Green<= palette_hex[run_data][15:8];
+						Blue <= palette_hex[run_data][7:0];
+					end
+					if( execute_on == 1'b1)
+					begin
+						Red <= palette_hex[execute_data][23:16];
+						Green <= palette_hex[execute_data][15:8];
+						Blue<= palette_hex[execute_data][7:0];
+					end
+					if( pokemonA_on == 1'b1)
+					begin
+						Red <= poke_data[23:16];
+						Green <= poke_data[15:8];
+						Blue<= poke_data[7:0];
+					end
+					if( pokemonB_on == 1'b1)
+					begin
+						Red <= poke_data[23:16];
+						Green <= poke_data[15:8];
+						Blue<= poke_data[7:0];
+					end
+			  end
+		endcase
     end 
     
 endmodule
