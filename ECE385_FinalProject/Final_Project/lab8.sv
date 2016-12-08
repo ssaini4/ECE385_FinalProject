@@ -12,7 +12,7 @@
 
 module  lab8 		( input         CLOCK_50,
                        input[3:0]    KEY, //bit 0 is set up as Reset
-							  output [6:0]  HEX0, HEX1,// HEX2, HEX3, HEX4, HEX5, HEX6, HEX7,
+							  output [6:0]  HEX0, HEX1,HEX2,HEX3,// HEX2, HEX3, HEX4, HEX5, HEX6, HEX7,
 							  //output [8:0]  LEDG,
 							  //output [17:0] LEDR,
 							  // VGA Interface 
@@ -49,7 +49,7 @@ module  lab8 		( input         CLOCK_50,
 	 assign vssig=VGA_VS;
     logic [9:0] drawxsig, drawysig, playerxsig, playerysig, playersizesig;
 	 logic [15:0] keycode;
-    
+    logic [7:0] display,p_display;
 	 assign Clk = CLOCK_50;
     assign {Reset_h}=~ (KEY[0]);  // The push buttons are active low
 	
@@ -135,16 +135,17 @@ module  lab8 		( input         CLOCK_50,
 	 .Red(VGA_R), 
 	 .Green(VGA_G), 
 	 .Blue(VGA_B),
-	 .keycode(keycode[7:0])
-	 
+	 .keycode(keycode[7:0]),
+	 .display(display),
+	 .prev_display(p_display),
+	 .reset_n(reset_reset_n)
 	 );
 		
 	
 	
-	 HexDriver hex_inst_0 (keycode[3:0], HEX0);
-	 HexDriver hex_inst_1 (keycode[7:4], HEX1);
-    
-
+	 HexDriver hex_inst_0 (display[7:4], HEX3);
+	 HexDriver hex_inst_1 (display[3:0], HEX2);
+	assign p_display[7:0] = display[7:0];
 	 /**************************************************************************************
 	    ATTENTION! Please answer the following quesiton in your lab report! Points will be allocated for the answers!
 		 Hidden Question #1/2:

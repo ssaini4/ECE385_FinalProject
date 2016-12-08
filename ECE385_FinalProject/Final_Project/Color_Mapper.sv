@@ -16,9 +16,10 @@
 
 
 module  color_mapper ( input        [9:0] BallX, BallY, DrawX, DrawY, Ball_size,
-								input Clk,
+								input Clk,input reset_n,
 								input [7:0] keycode,
-                       output logic [7:0]  Red, Green, Blue );
+                       output logic [7:0]  Red, Green, Blue, input [7:0]prev_display,
+								output [7:0] display);
     
     logic ball_on;
 	 
@@ -40,7 +41,6 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 
 	logic player_on;
 	logic[1:0] scene=2'b10;
-
 	logic boulder_on;
 
 	 logic[8:0] player_size_x = 14;
@@ -128,9 +128,9 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 	logic [18:0] start_addr;
 	logic start_data;
 	logic start_on;
-	
+	logic [7:0] score = 8'h00;
 	logic [1:0] winner = 2'b10;
-	logic [12:0] i = 0;
+	logic [18:0] i = 0;
 	font_winner(.Clk(Clk),.keycode(keycode),.winner(winner));
 	font_master(.Clk(Clk),.i(i),.t(i));
 	font_rock (.addr(rock_addr), .data(rock_data));
@@ -143,14 +143,13 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 	
 	font_grass (.addr(grass_addr), .data(grass_data)); 
 	font_player_image (.addr(player_addr), .data(player_data_24bit), .keycode(keycode[7:0]));
-		
+
 	font_boulder (.addr(boulder_addr), .data(boulder_data));
 	font_start (.addr(start_addr), .data(start_data));
 	logic [1:0]scene3 = 2'b10;
-	
-
 	always_ff @(posedge Clk)
 	begin:Game_scene
+		
 		case (scene)
 			2'b00:
 					begin
@@ -167,6 +166,10 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 			
 			2'b01:
 				begin
+					if ((BallX+BallY+7)%100 < 2)
+					begin
+						scene = 2'b10;
+					end
 					if (DrawX >= BallX && DrawX < BallX + player_size_x && DrawY >= BallY && DrawY < BallY + player_size_y)
 					begin
 						player_on = 1'b1;
@@ -256,12 +259,11 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 						execute_on <= 1'b1;
 						execute_addr <= ((DrawY-executeY)*60 + DrawX-executeX);
 					end
-					if(keycode == 8'h28)
-							scene = 2'b10;
-					else if (i == 2000 & keycode == 8'h2c)
+					if (keycode == 8'h2c)
  					begin
  						scene = 2'b01;
  					end
+				
 				end	
 	endcase
 	case(keycode)
@@ -377,33 +379,33 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 					end
 					if(pokemonB_on == 1'b1)
 					begin
-						Red <= palette_hex[poke_data][23:16];
-						Green <= palette_hex[poke_data][15:8];
-						Blue<= palette_hex[poke_data][7:0];
+						Red <= palette_hex[pokeB_data][23:16];
+						Green <= palette_hex[pokeB_data][15:8];
+						Blue<= palette_hex[pokeB_data][7:0];
 					end
 					if (winner == 2'b00 && keycode == 8'h2c)
 					begin
 						Red <= 8'hff;
 						Green <= 8'h00;
 						Blue<= 8'h00;
-						
+						display <= prev_display + 8'h01;
 					end
 					if (winner == 2'b01 && keycode == 8'h2c)
 					begin
 						Red <= 8'h00;
 						Green <= 8'h00;
 						Blue<= 8'hff;
-					
+
 					end
 					if (winner == 2'b11 && keycode == 8'h2c)
 					begin
 						Red <= 8'h00;
 						Green <= 8'hff;
 						Blue<= 8'h00;
-						
 					end
 			  end
 		endcase
     end 
-    
+	 
+	 
 endmodule

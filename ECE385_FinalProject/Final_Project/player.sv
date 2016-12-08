@@ -15,7 +15,10 @@ logic [9:0] player_X_Pos, player_X_Motion, player_Y_Pos, player_Y_Motion, player
     parameter [9:0] player_X_Step=1;      // Step size on the X axis
     parameter [9:0] player_Y_Step=1;      // Step size on the Y axis
     assign player_Size = 10;  // assigns the value 4 as a 10-digit binary number, ie "0000000100"
-   
+	 logic wall;
+	 logic [9:0]grid_addr;
+	grid (.addr(grid_addr), .data(wall));
+
     always_ff @ (posedge Reset or posedge frame_clk )
     begin: Move_player
         if (Reset)  // Asynchronous Reset
@@ -30,15 +33,16 @@ logic [9:0] player_X_Pos, player_X_Motion, player_Y_Pos, player_Y_Motion, player
         begin 
 				 if ( (player_Y_Pos + player_Size) >= player_Y_Max )  // player is at the bottom edge, BOUNCE!
 					  begin
-					  player_Y_Motion <= (~ (player_Y_Step) + 1'b1);  // 2's complement.
-					  player_X_Motion <= 10'b0;
+						  player_Y_Motion <= (~ (player_Y_Step) + 1'b1);  // 2's complement.
+						  player_X_Motion <= 10'b0;
 					  end
+				
 				 else if ( (player_Y_Pos - player_Size) <= player_Y_Min )  // player is at the top edge, BOUNCE!
 				 begin
 					  player_Y_Motion <= player_Y_Step;
 					  player_X_Motion <= 10'b0;
-					  end
-				else if ( (player_X_Pos + player_Size) >= player_X_Max )  // player is at the rightmost edge, BOUNCE!
+				 end
+				 else if ( (player_X_Pos + player_Size) >= player_X_Max )  // player is at the rightmost edge, BOUNCE!
 					  begin
 					  player_X_Motion <= (~ (player_X_Step) + 1'b1);  // 2's complement.
 					  player_Y_Motion <= 10'b0;
@@ -48,7 +52,7 @@ logic [9:0] player_X_Pos, player_X_Motion, player_Y_Pos, player_Y_Motion, player
 					  player_X_Motion <= player_X_Step;
 						player_Y_Motion <= 10'b0;
 				 end
-				 else 
+					else
 					begin
 				   player_Y_Motion <= player_Y_Motion;  // player is somewhere in the middle, don't bounce, just keep moving
 					  player_X_Motion <= player_X_Motion;  // player is somewhere in the middle, don't bounce, just keep moving
@@ -82,17 +86,22 @@ logic [9:0] player_X_Pos, player_X_Motion, player_Y_Pos, player_Y_Motion, player
 								end
 						endcase
 					  end
-					  
-		 
-				 player_Y_Pos <= (player_Y_Pos + player_Y_Motion);  // Update player position
-				 player_X_Pos <= (player_X_Pos + player_X_Motion);
-			
+				grid_addr = ((player_Y_Pos+player_Y_Motion*20)/20)*32+(player_X_Pos+player_X_Motion)/20;
+				if(wall == 1)
+					begin
+						player_Y_Pos <= player_Y_Pos;  // Update player position
+						player_X_Pos <= player_X_Pos;
+					end
+				else
+					begin
+						player_Y_Pos <= (player_Y_Pos + player_Y_Motion);  // Update player position
+						player_X_Pos <= (player_X_Pos + player_X_Motion);
+					end
 			
 		end  
     end
        
     assign playerX = player_X_Pos;
-   
     assign playerY = player_Y_Pos;
    
     

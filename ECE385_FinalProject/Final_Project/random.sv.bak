@@ -1,0 +1,8 @@
+module rng(
+			input logic[7:0] draw_x,
+			input logic[7:0] draw_y,
+			output logic[10:0] number
+);
+
+ number = (draw_x*draw_y*7)%50;
+endmodule
