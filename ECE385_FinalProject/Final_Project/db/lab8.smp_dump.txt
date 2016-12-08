@@ -1,4 +1,16 @@
 
+State Machine - |lab8|color_mapper:color_instance|curr_scene
+Name curr_scene.00 curr_scene.10 curr_scene.01 
+curr_scene.00 0 0 0 
+curr_scene.01 1 0 1 
+curr_scene.10 1 1 0 
+
+State Machine - |lab8|color_mapper:color_instance|scene
+Name scene.00 scene.10 scene.01 
+scene.00 0 0 0 
+scene.01 1 0 1 
+scene.10 1 1 0 
+
 State Machine - |lab8|nios_system:nios_system|nios_system_sdram:sdram|m_next
 Name m_next.010000000 m_next.000010000 m_next.000001000 m_next.000000001 
 m_next.000000001 0 0 0 0 

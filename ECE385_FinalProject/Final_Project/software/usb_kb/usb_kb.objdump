@@ -37,49 +37,49 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   9 .debug_aranges 00000ef0  00000000  00000000  00014f80  2**3
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_info   00023540  00000000  00000000  00015e70  2**0
+ 10 .debug_info   00023579  00000000  00000000  00015e70  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_abbrev 00009010  00000000  00000000  000393b0  2**0
+ 11 .debug_abbrev 00009010  00000000  00000000  000393e9  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_line   0000b767  00000000  00000000  000423c0  2**0
+ 12 .debug_line   0000b767  00000000  00000000  000423f9  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_frame  00002328  00000000  00000000  0004db28  2**2
+ 13 .debug_frame  00002328  00000000  00000000  0004db60  2**2
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_str    000035e9  00000000  00000000  0004fe50  2**0
+ 14 .debug_str    000035f3  00000000  00000000  0004fe88  2**0
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_loc    00017acc  00000000  00000000  00053439  2**0
+ 15 .debug_loc    00017acc  00000000  00000000  0005347b  2**0
                   CONTENTS, READONLY, DEBUGGING
- 16 .debug_alt_sim_info 00000040  00000000  00000000  0006af08  2**2
+ 16 .debug_alt_sim_info 00000040  00000000  00000000  0006af48  2**2
                   CONTENTS, READONLY, DEBUGGING
- 17 .debug_ranges 000018b8  00000000  00000000  0006af48  2**3
+ 17 .debug_ranges 000018b8  00000000  00000000  0006af88  2**3
                   CONTENTS, READONLY, DEBUGGING
- 18 .thread_model 00000003  00000000  00000000  0006fb22  2**0
+ 18 .thread_model 00000003  00000000  00000000  0006fb62  2**0
                   CONTENTS, READONLY
- 19 .cpu          0000000c  00000000  00000000  0006fb25  2**0
+ 19 .cpu          0000000c  00000000  00000000  0006fb65  2**0
                   CONTENTS, READONLY
- 20 .qsys         00000001  00000000  00000000  0006fb31  2**0
+ 20 .qsys         00000001  00000000  00000000  0006fb71  2**0
                   CONTENTS, READONLY
- 21 .simulation_enabled 00000001  00000000  00000000  0006fb32  2**0
+ 21 .simulation_enabled 00000001  00000000  00000000  0006fb72  2**0
                   CONTENTS, READONLY
- 22 .sysid_hash   00000004  00000000  00000000  0006fb33  2**0
+ 22 .sysid_hash   00000004  00000000  00000000  0006fb73  2**0
                   CONTENTS, READONLY
- 23 .sysid_base   00000004  00000000  00000000  0006fb37  2**0
+ 23 .sysid_base   00000004  00000000  00000000  0006fb77  2**0
                   CONTENTS, READONLY
- 24 .sysid_time   00000004  00000000  00000000  0006fb3b  2**0
+ 24 .sysid_time   00000004  00000000  00000000  0006fb7b  2**0
                   CONTENTS, READONLY
- 25 .stderr_dev   0000000b  00000000  00000000  0006fb3f  2**0
+ 25 .stderr_dev   0000000b  00000000  00000000  0006fb7f  2**0
                   CONTENTS, READONLY
- 26 .stdin_dev    0000000b  00000000  00000000  0006fb4a  2**0
+ 26 .stdin_dev    0000000b  00000000  00000000  0006fb8a  2**0
                   CONTENTS, READONLY
- 27 .stdout_dev   0000000b  00000000  00000000  0006fb55  2**0
+ 27 .stdout_dev   0000000b  00000000  00000000  0006fb95  2**0
                   CONTENTS, READONLY
- 28 .sopc_system_name 0000000b  00000000  00000000  0006fb60  2**0
+ 28 .sopc_system_name 0000000b  00000000  00000000  0006fba0  2**0
                   CONTENTS, READONLY
- 29 .quartus_project_dir 0000004f  00000000  00000000  0006fb6b  2**0
+ 29 .quartus_project_dir 00000046  00000000  00000000  0006fbab  2**0
                   CONTENTS, READONLY
- 30 .jdi          000042ea  00000000  00000000  0006fbba  2**0
+ 30 .jdi          000042ea  00000000  00000000  0006fbf1  2**0
                   CONTENTS, READONLY
- 31 .sopcinfo     0008cdd9  00000000  00000000  00073ea4  2**0
+ 31 .sopcinfo     00091d0e  00000000  00000000  00073edb  2**0
                   CONTENTS, READONLY
 SYMBOL TABLE:
 10000000 l    d  .entry	00000000 .entry
@@ -22232,7 +22232,7 @@ int alt_get_fd (alt_dev* dev)
 100117a4:	d9400015 	stw	r5,0(sp)
 100117a8:	d9800115 	stw	r6,4(sp)
 100117ac:	d9c00215 	stw	r7,8(sp)
-100117b0:	00000000 	call	10000000 <__alt_mem_sdram>
+100117b0:	00000000 	call	10000000 <__reset>
 100117b4:	d9400017 	ldw	r5,0(sp)
 100117b8:	d9800117 	ldw	r6,4(sp)
 100117bc:	d9c00217 	ldw	r7,8(sp)
@@ -22316,7 +22316,7 @@ int alt_get_fd (alt_dev* dev)
 100118ec:	10003226 	beq	r2,zero,100119b8 <__call_exitprocs+0x178>
 100118f0:	a009883a 	mov	r4,r20
 100118f4:	98800015 	stw	r2,0(r19)
-100118f8:	00000000 	call	10000000 <__alt_mem_sdram>
+100118f8:	00000000 	call	10000000 <__reset>
 100118fc:	9d000017 	ldw	r20,0(r19)
 10011900:	a03fe41e 	bne	r20,zero,10011894 <__alt_data_end+0xf8011894>
 10011904:	dfc00a17 	ldw	ra,40(sp)

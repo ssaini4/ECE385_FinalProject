@@ -4,7 +4,7 @@ JedecChain;
 	DefaultMfr(6E);
 
 	P ActionCode(Cfg)
-		Device PartName(EP4CE115F29) Path("C:/ece385/ECE385_FinalProject/ECE385_FinalProject/Final_Project/") File("lab8.sof") MfrSpec(OpMask(1));
+		Device PartName(EP4CE115F29) Path("C:/Users/ssaini4/ECE385_FinalProject/ECE385_FinalProject/Final_Project/") File("lab8.sof") MfrSpec(OpMask(1));
 
 ChainEnd;
 

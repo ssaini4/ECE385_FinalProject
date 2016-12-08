@@ -39,7 +39,8 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 
 
 	logic player_on;
-	logic[1:0] scene;
+	logic[1:0] scene=2'b00;
+	logic [1:0] curr_scene = 2'b00;
 	logic boulder_on;
 
 	 logic[8:0] player_size_x = 14;
@@ -124,9 +125,14 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 	assign executeX = 280;
 	assign executeY = 250;
 	
-	logic [19:0] start_addr;
-	logic[7:0] start_data;
+	logic [18:0] start_addr;
+	logic start_data;
 	logic start_on;
+	
+	logic [1:0] winner = 2'b10;
+
+	//font_winner(.Clk(Clk),.keycode(keycode),.winner(winner));
+	
 	
 	font_rock (.addr(rock_addr), .data(rock_data));
 	font_cut (.addr(cut_addr), .data(cut_data));
@@ -135,25 +141,28 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 	font_execute (.addr(execute_addr), .data(execute_data));
 	font_pokeA (.addr(pokemonA_addr), .data(poke_data));	
 	font_pokeB (.addr(pokemonB_addr), .data(pokeB_data));
-	assign scene = 2'b00;
-	 
+	
 	font_grass (.addr(grass_addr), .data(grass_data)); 
 	font_player_image (.addr(player_addr), .data(player_data_24bit), .keycode(keycode[7:0]));
 		
 	font_boulder (.addr(boulder_addr), .data(boulder_data));
 	font_start (.addr(start_addr), .data(start_data));
+	
+
 	always_ff @(posedge Clk)
 	begin:Game_scene
 		case (scene)
 			2'b00:
 					begin
-						if( DrawX>= 30 && DrawX < 540 && DrawY >=30 && DrawY < 240)
+						if( DrawX>= 100 && DrawX < 531 && DrawY >=80 && DrawY < 293)
 						begin
-							start_addr = (DrawY-30)*210+DrawX-30;
+							start_addr = ((DrawY-80)*431+(DrawX-100));
 							start_on = 1'b1;
 						end
 						else
 							start_on = 1'b0;
+						if(keycode == 8'h28)
+							scene = 2'b01;
 					end
 			
 			2'b01:
@@ -247,6 +256,8 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 						execute_on <= 1'b1;
 						execute_addr <= ((DrawY-executeY)*20 + DrawX-executeX);
 					end
+					if(keycode == 8'h28)
+							scene = 2'b01;
 				end	
 	endcase
 	end
@@ -256,11 +267,21 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 		case(scene)
 			2'b00:
 					begin
+							curr_scene <= scene;
 							if(start_on==1'b1)
 							begin
-								Red <= palette_hex[start_data][23:16];
-								Green <= palette_hex[start_data][15:8];
-								Blue <= palette_hex[start_data][7:0];
+								if( start_data == 1'b0)
+									begin
+										Red <= 8'h00;
+										Green <= 8'h00;
+										Blue <= 8'h00;
+									end
+								else
+									begin
+										Red <= 8'hff;
+										Green <= 8'hff;
+										Blue <= 8'hff;
+									end
 							end
 							else
 							begin
@@ -271,6 +292,7 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 					end
 			2'b01: 
 				  begin
+				  		curr_scene <= scene;
 						if(player_on == 1'b1 && player_data_24bit != 24'hff260 && player_data_24bit !=  24'hff00)
 						begin
 							Red <= player_data_24bit[23:16];
@@ -292,6 +314,7 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 				  end      
 			2'b10:
 			  begin
+  					curr_scene <= scene;
 					Red <= 8'hff;
 					Green<= 8'hff;
 					Blue <= 8'hff;
