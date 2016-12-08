@@ -39,8 +39,8 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 
 
 	logic player_on;
-	logic[1:0] scene=2'b00;
-	logic [1:0] curr_scene = 2'b00;
+	logic[1:0] scene=2'b10;
+
 	logic boulder_on;
 
 	 logic[8:0] player_size_x = 14;
@@ -131,9 +131,8 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 	
 	logic [1:0] winner = 2'b10;
 
-	//font_winner(.Clk(Clk),.keycode(keycode),.winner(winner));
-	
-	
+	font_winner(.Clk(Clk),.keycode(keycode),.winner(winner));
+
 	font_rock (.addr(rock_addr), .data(rock_data));
 	font_cut (.addr(cut_addr), .data(cut_data));
 	font_paper (.addr(paper_addr), .data(paper_data));
@@ -257,8 +256,16 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 						execute_addr <= ((DrawY-executeY)*20 + DrawX-executeX);
 					end
 					if(keycode == 8'h28)
-							scene = 2'b01;
+							scene = 2'b10;
 				end	
+	endcase
+	case(keycode)
+			8'h1e:
+				scene = 2'b00;
+			8'h1f:
+				scene = 2'b01;
+			8'h20:
+				scene = 2'b10;
 	endcase
 	end
        
@@ -267,7 +274,7 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 		case(scene)
 			2'b00:
 					begin
-							curr_scene <= scene;
+
 							if(start_on==1'b1)
 							begin
 								if( start_data == 1'b0)
@@ -292,7 +299,7 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 					end
 			2'b01: 
 				  begin
-				  		curr_scene <= scene;
+	
 						if(player_on == 1'b1 && player_data_24bit != 24'hff260 && player_data_24bit !=  24'hff00)
 						begin
 							Red <= player_data_24bit[23:16];
@@ -314,7 +321,7 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 				  end      
 			2'b10:
 			  begin
-  					curr_scene <= scene;
+
 					Red <= 8'hff;
 					Green<= 8'hff;
 					Blue <= 8'hff;
@@ -330,35 +337,53 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 						Green<= palette_hex[cut_data][15:8];
 						Blue <= palette_hex[cut_data][7:0];
 					end
-					if( paper_on == 1'b1)
+					if(paper_on == 1'b1)
 					begin
 						Red <= palette_hex[paper_data][23:16];
 						Green <= palette_hex[paper_data][15:8];
 						Blue <= palette_hex[paper_data][7:0];
 					end
-					if( run_on == 1'b1)
+					if(run_on == 1'b1)
 					begin
 						Red <= palette_hex[run_data][23:16];
 						Green<= palette_hex[run_data][15:8];
 						Blue <= palette_hex[run_data][7:0];
 					end
-					if( execute_on == 1'b1)
+					if(execute_on == 1'b1)
 					begin
 						Red <= palette_hex[execute_data][23:16];
 						Green <= palette_hex[execute_data][15:8];
 						Blue<= palette_hex[execute_data][7:0];
 					end
-					if( pokemonA_on == 1'b1)
+					if(pokemonA_on == 1'b1)
 					begin
 						Red <= palette_hex[poke_data][23:16];
 						Green <= palette_hex[poke_data][15:8];
 						Blue<= palette_hex[poke_data][7:0];
 					end
-					if( pokemonB_on == 1'b1)
+					if(pokemonB_on == 1'b1)
 					begin
 						Red <= palette_hex[poke_data][23:16];
 						Green <= palette_hex[poke_data][15:8];
 						Blue<= palette_hex[poke_data][7:0];
+					end
+					if (winner == 2'b00 && keycode == 8'h2c)
+					begin
+						Red <= 8'hff;
+						Green <= 8'h00;
+						Blue<= 8'h00;
+					end
+					if (winner == 2'b01 && keycode == 8'h2c)
+					begin
+						Red <= 8'h00;
+						Green <= 8'h00;
+						Blue<= 8'hff;
+					end
+					if (winner == 2'b11 && keycode == 8'h2c)
+					begin
+						Red <= 8'h00;
+						Green <= 8'hff;
+						Blue<= 8'h00;
 					end
 			  end
 		endcase
