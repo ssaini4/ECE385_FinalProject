@@ -4,49 +4,49 @@ KEY[0] => KEY[0].IN1
 KEY[1] => ~NO_FANOUT~
 KEY[2] => ~NO_FANOUT~
 KEY[3] => ~NO_FANOUT~
-HEX0[0] <= HexDriver:hex_inst_0.port1
-HEX0[1] <= HexDriver:hex_inst_0.port1
-HEX0[2] <= HexDriver:hex_inst_0.port1
-HEX0[3] <= HexDriver:hex_inst_0.port1
-HEX0[4] <= HexDriver:hex_inst_0.port1
-HEX0[5] <= HexDriver:hex_inst_0.port1
-HEX0[6] <= HexDriver:hex_inst_0.port1
-HEX1[0] <= HexDriver:hex_inst_1.port1
-HEX1[1] <= HexDriver:hex_inst_1.port1
-HEX1[2] <= HexDriver:hex_inst_1.port1
-HEX1[3] <= HexDriver:hex_inst_1.port1
-HEX1[4] <= HexDriver:hex_inst_1.port1
-HEX1[5] <= HexDriver:hex_inst_1.port1
-HEX1[6] <= HexDriver:hex_inst_1.port1
-VGA_R[0] <= color_mapper:color_instance.Red
-VGA_R[1] <= color_mapper:color_instance.Red
-VGA_R[2] <= color_mapper:color_instance.Red
-VGA_R[3] <= color_mapper:color_instance.Red
-VGA_R[4] <= color_mapper:color_instance.Red
-VGA_R[5] <= color_mapper:color_instance.Red
-VGA_R[6] <= color_mapper:color_instance.Red
-VGA_R[7] <= color_mapper:color_instance.Red
-VGA_G[0] <= color_mapper:color_instance.Green
-VGA_G[1] <= color_mapper:color_instance.Green
-VGA_G[2] <= color_mapper:color_instance.Green
-VGA_G[3] <= color_mapper:color_instance.Green
-VGA_G[4] <= color_mapper:color_instance.Green
-VGA_G[5] <= color_mapper:color_instance.Green
-VGA_G[6] <= color_mapper:color_instance.Green
-VGA_G[7] <= color_mapper:color_instance.Green
-VGA_B[0] <= color_mapper:color_instance.Blue
-VGA_B[1] <= color_mapper:color_instance.Blue
-VGA_B[2] <= color_mapper:color_instance.Blue
-VGA_B[3] <= color_mapper:color_instance.Blue
-VGA_B[4] <= color_mapper:color_instance.Blue
-VGA_B[5] <= color_mapper:color_instance.Blue
-VGA_B[6] <= color_mapper:color_instance.Blue
-VGA_B[7] <= color_mapper:color_instance.Blue
-VGA_CLK <= vga_controller:vgasync_instance.pixel_clk
-VGA_SYNC_N <= vga_controller:vgasync_instance.sync
-VGA_BLANK_N <= vga_controller:vgasync_instance.blank
-VGA_VS <= vssig.DB_MAX_OUTPUT_PORT_TYPE
-VGA_HS <= vga_controller:vgasync_instance.hs
+HEX0[0] << HexDriver:hex_inst_0.port1
+HEX0[1] << HexDriver:hex_inst_0.port1
+HEX0[2] << HexDriver:hex_inst_0.port1
+HEX0[3] << HexDriver:hex_inst_0.port1
+HEX0[4] << HexDriver:hex_inst_0.port1
+HEX0[5] << HexDriver:hex_inst_0.port1
+HEX0[6] << HexDriver:hex_inst_0.port1
+HEX1[0] << HexDriver:hex_inst_1.port1
+HEX1[1] << HexDriver:hex_inst_1.port1
+HEX1[2] << HexDriver:hex_inst_1.port1
+HEX1[3] << HexDriver:hex_inst_1.port1
+HEX1[4] << HexDriver:hex_inst_1.port1
+HEX1[5] << HexDriver:hex_inst_1.port1
+HEX1[6] << HexDriver:hex_inst_1.port1
+VGA_R[0] << color_mapper:color_instance.Red
+VGA_R[1] << color_mapper:color_instance.Red
+VGA_R[2] << color_mapper:color_instance.Red
+VGA_R[3] << color_mapper:color_instance.Red
+VGA_R[4] << color_mapper:color_instance.Red
+VGA_R[5] << color_mapper:color_instance.Red
+VGA_R[6] << color_mapper:color_instance.Red
+VGA_R[7] << color_mapper:color_instance.Red
+VGA_G[0] << color_mapper:color_instance.Green
+VGA_G[1] << color_mapper:color_instance.Green
+VGA_G[2] << color_mapper:color_instance.Green
+VGA_G[3] << color_mapper:color_instance.Green
+VGA_G[4] << color_mapper:color_instance.Green
+VGA_G[5] << color_mapper:color_instance.Green
+VGA_G[6] << color_mapper:color_instance.Green
+VGA_G[7] << color_mapper:color_instance.Green
+VGA_B[0] << color_mapper:color_instance.Blue
+VGA_B[1] << color_mapper:color_instance.Blue
+VGA_B[2] << color_mapper:color_instance.Blue
+VGA_B[3] << color_mapper:color_instance.Blue
+VGA_B[4] << color_mapper:color_instance.Blue
+VGA_B[5] << color_mapper:color_instance.Blue
+VGA_B[6] << color_mapper:color_instance.Blue
+VGA_B[7] << color_mapper:color_instance.Blue
+VGA_CLK << vga_controller:vgasync_instance.pixel_clk
+VGA_SYNC_N << vga_controller:vgasync_instance.sync
+VGA_BLANK_N << vga_controller:vgasync_instance.blank
+VGA_VS << vssig.DB_MAX_OUTPUT_PORT_TYPE
+VGA_HS << vga_controller:vgasync_instance.hs
 OTG_DATA[0] <> hpi_io_intf:hpi_io_inst.OTG_DATA
 OTG_DATA[1] <> hpi_io_intf:hpi_io_inst.OTG_DATA
 OTG_DATA[2] <> hpi_io_intf:hpi_io_inst.OTG_DATA
@@ -63,26 +63,26 @@ OTG_DATA[12] <> hpi_io_intf:hpi_io_inst.OTG_DATA
 OTG_DATA[13] <> hpi_io_intf:hpi_io_inst.OTG_DATA
 OTG_DATA[14] <> hpi_io_intf:hpi_io_inst.OTG_DATA
 OTG_DATA[15] <> hpi_io_intf:hpi_io_inst.OTG_DATA
-OTG_ADDR[0] <= hpi_io_intf:hpi_io_inst.OTG_ADDR
-OTG_ADDR[1] <= hpi_io_intf:hpi_io_inst.OTG_ADDR
-OTG_CS_N <= hpi_io_intf:hpi_io_inst.OTG_CS_N
-OTG_RD_N <= hpi_io_intf:hpi_io_inst.OTG_RD_N
-OTG_WR_N <= hpi_io_intf:hpi_io_inst.OTG_WR_N
-OTG_RST_N <= hpi_io_intf:hpi_io_inst.OTG_RST_N
+OTG_ADDR[0] << hpi_io_intf:hpi_io_inst.OTG_ADDR
+OTG_ADDR[1] << hpi_io_intf:hpi_io_inst.OTG_ADDR
+OTG_CS_N << hpi_io_intf:hpi_io_inst.OTG_CS_N
+OTG_RD_N << hpi_io_intf:hpi_io_inst.OTG_RD_N
+OTG_WR_N << hpi_io_intf:hpi_io_inst.OTG_WR_N
+OTG_RST_N << hpi_io_intf:hpi_io_inst.OTG_RST_N
 OTG_INT => OTG_INT.IN1
-DRAM_ADDR[0] <= nios_system:nios_system.sdram_wire_addr
-DRAM_ADDR[1] <= nios_system:nios_system.sdram_wire_addr
-DRAM_ADDR[2] <= nios_system:nios_system.sdram_wire_addr
-DRAM_ADDR[3] <= nios_system:nios_system.sdram_wire_addr
-DRAM_ADDR[4] <= nios_system:nios_system.sdram_wire_addr
-DRAM_ADDR[5] <= nios_system:nios_system.sdram_wire_addr
-DRAM_ADDR[6] <= nios_system:nios_system.sdram_wire_addr
-DRAM_ADDR[7] <= nios_system:nios_system.sdram_wire_addr
-DRAM_ADDR[8] <= nios_system:nios_system.sdram_wire_addr
-DRAM_ADDR[9] <= nios_system:nios_system.sdram_wire_addr
-DRAM_ADDR[10] <= nios_system:nios_system.sdram_wire_addr
-DRAM_ADDR[11] <= nios_system:nios_system.sdram_wire_addr
-DRAM_ADDR[12] <= nios_system:nios_system.sdram_wire_addr
+DRAM_ADDR[0] << nios_system:nios_system.sdram_wire_addr
+DRAM_ADDR[1] << nios_system:nios_system.sdram_wire_addr
+DRAM_ADDR[2] << nios_system:nios_system.sdram_wire_addr
+DRAM_ADDR[3] << nios_system:nios_system.sdram_wire_addr
+DRAM_ADDR[4] << nios_system:nios_system.sdram_wire_addr
+DRAM_ADDR[5] << nios_system:nios_system.sdram_wire_addr
+DRAM_ADDR[6] << nios_system:nios_system.sdram_wire_addr
+DRAM_ADDR[7] << nios_system:nios_system.sdram_wire_addr
+DRAM_ADDR[8] << nios_system:nios_system.sdram_wire_addr
+DRAM_ADDR[9] << nios_system:nios_system.sdram_wire_addr
+DRAM_ADDR[10] << nios_system:nios_system.sdram_wire_addr
+DRAM_ADDR[11] << nios_system:nios_system.sdram_wire_addr
+DRAM_ADDR[12] << nios_system:nios_system.sdram_wire_addr
 DRAM_DQ[0] <> nios_system:nios_system.sdram_wire_dq
 DRAM_DQ[1] <> nios_system:nios_system.sdram_wire_dq
 DRAM_DQ[2] <> nios_system:nios_system.sdram_wire_dq
@@ -115,18 +115,18 @@ DRAM_DQ[28] <> nios_system:nios_system.sdram_wire_dq
 DRAM_DQ[29] <> nios_system:nios_system.sdram_wire_dq
 DRAM_DQ[30] <> nios_system:nios_system.sdram_wire_dq
 DRAM_DQ[31] <> nios_system:nios_system.sdram_wire_dq
-DRAM_BA[0] <= nios_system:nios_system.sdram_wire_ba
-DRAM_BA[1] <= nios_system:nios_system.sdram_wire_ba
-DRAM_DQM[0] <= nios_system:nios_system.sdram_wire_dqm
-DRAM_DQM[1] <= nios_system:nios_system.sdram_wire_dqm
-DRAM_DQM[2] <= nios_system:nios_system.sdram_wire_dqm
-DRAM_DQM[3] <= nios_system:nios_system.sdram_wire_dqm
-DRAM_RAS_N <= nios_system:nios_system.sdram_wire_ras_n
-DRAM_CAS_N <= nios_system:nios_system.sdram_wire_cas_n
-DRAM_CKE <= nios_system:nios_system.sdram_wire_cke
-DRAM_WE_N <= nios_system:nios_system.sdram_wire_we_n
-DRAM_CS_N <= nios_system:nios_system.sdram_wire_cs_n
-DRAM_CLK <= nios_system:nios_system.sdram_clk_clk
+DRAM_BA[0] << nios_system:nios_system.sdram_wire_ba
+DRAM_BA[1] << nios_system:nios_system.sdram_wire_ba
+DRAM_DQM[0] << nios_system:nios_system.sdram_wire_dqm
+DRAM_DQM[1] << nios_system:nios_system.sdram_wire_dqm
+DRAM_DQM[2] << nios_system:nios_system.sdram_wire_dqm
+DRAM_DQM[3] << nios_system:nios_system.sdram_wire_dqm
+DRAM_RAS_N << nios_system:nios_system.sdram_wire_ras_n
+DRAM_CAS_N << nios_system:nios_system.sdram_wire_cas_n
+DRAM_CKE << nios_system:nios_system.sdram_wire_cke
+DRAM_WE_N << nios_system:nios_system.sdram_wire_we_n
+DRAM_CS_N << nios_system:nios_system.sdram_wire_cs_n
+DRAM_CLK << nios_system:nios_system.sdram_clk_clk
 
 
 |lab8|hpi_io_intf:hpi_io_inst
@@ -89710,6 +89710,7 @@ Ball_size[7] => ~NO_FANOUT~
 Ball_size[8] => ~NO_FANOUT~
 Ball_size[9] => ~NO_FANOUT~
 Clk => font_winner:comb_223.Clk
+Clk => font_master:comb_224.Clk
 Clk => Blue[0]~reg0.CLK
 Clk => Blue[1]~reg0.CLK
 Clk => Blue[2]~reg0.CLK
@@ -89967,7 +89968,40 @@ winner[0] <= winner[0]~reg0.DB_MAX_OUTPUT_PORT_TYPE
 winner[1] <= winner[1]~reg0.DB_MAX_OUTPUT_PORT_TYPE
 
 
-|lab8|color_mapper:color_instance|font_rock:comb_224
+|lab8|color_mapper:color_instance|font_master:comb_224
+Clk => t[0]~reg0.CLK
+Clk => t[1]~reg0.CLK
+Clk => t[2]~reg0.CLK
+Clk => t[3]~reg0.CLK
+Clk => t[4]~reg0.CLK
+Clk => t[5]~reg0.CLK
+Clk => t[6]~reg0.CLK
+Clk => t[7]~reg0.CLK
+Clk => t[8]~reg0.CLK
+Clk => t[9]~reg0.CLK
+i[0] => Add0.IN20
+i[1] => Add0.IN19
+i[2] => Add0.IN18
+i[3] => Add0.IN17
+i[4] => Add0.IN16
+i[5] => Add0.IN15
+i[6] => Add0.IN14
+i[7] => Add0.IN13
+i[8] => Add0.IN12
+i[9] => Add0.IN11
+t[0] <= t[0]~reg0.DB_MAX_OUTPUT_PORT_TYPE
+t[1] <= t[1]~reg0.DB_MAX_OUTPUT_PORT_TYPE
+t[2] <= t[2]~reg0.DB_MAX_OUTPUT_PORT_TYPE
+t[3] <= t[3]~reg0.DB_MAX_OUTPUT_PORT_TYPE
+t[4] <= t[4]~reg0.DB_MAX_OUTPUT_PORT_TYPE
+t[5] <= t[5]~reg0.DB_MAX_OUTPUT_PORT_TYPE
+t[6] <= t[6]~reg0.DB_MAX_OUTPUT_PORT_TYPE
+t[7] <= t[7]~reg0.DB_MAX_OUTPUT_PORT_TYPE
+t[8] <= t[8]~reg0.DB_MAX_OUTPUT_PORT_TYPE
+t[9] <= t[9]~reg0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|lab8|color_mapper:color_instance|font_rock:comb_225
 addr[0] => Decoder0.IN8
 addr[1] => Decoder0.IN7
 addr[2] => Decoder0.IN6
@@ -89988,7 +90022,7 @@ data[6] <= <GND>
 data[7] <= <GND>
 
 
-|lab8|color_mapper:color_instance|font_cut:comb_225
+|lab8|color_mapper:color_instance|font_cut:comb_226
 addr[0] => Decoder0.IN8
 addr[1] => Decoder0.IN7
 addr[2] => Decoder0.IN6
@@ -90009,7 +90043,7 @@ data[6] <= <GND>
 data[7] <= <GND>
 
 
-|lab8|color_mapper:color_instance|font_paper:comb_226
+|lab8|color_mapper:color_instance|font_paper:comb_227
 addr[0] => Decoder0.IN8
 addr[1] => Decoder0.IN7
 addr[2] => Decoder0.IN6
@@ -90030,7 +90064,7 @@ data[6] <= <GND>
 data[7] <= <GND>
 
 
-|lab8|color_mapper:color_instance|font_run:comb_227
+|lab8|color_mapper:color_instance|font_run:comb_228
 addr[0] => Decoder0.IN8
 addr[1] => Decoder0.IN7
 addr[2] => Decoder0.IN6
@@ -90051,7 +90085,7 @@ data[6] <= <GND>
 data[7] <= <GND>
 
 
-|lab8|color_mapper:color_instance|font_execute:comb_228
+|lab8|color_mapper:color_instance|font_execute:comb_229
 addr[0] => Decoder0.IN10
 addr[1] => Decoder0.IN9
 addr[2] => Decoder0.IN8
@@ -90074,7 +90108,7 @@ data[6] <= <GND>
 data[7] <= <GND>
 
 
-|lab8|color_mapper:color_instance|font_pokeA:comb_229
+|lab8|color_mapper:color_instance|font_pokeA:comb_230
 addr[0] => Decoder0.IN9
 addr[1] => Decoder0.IN8
 addr[2] => Decoder0.IN7
@@ -90095,7 +90129,7 @@ data[6] <= <GND>
 data[7] <= <GND>
 
 
-|lab8|color_mapper:color_instance|font_pokeB:comb_230
+|lab8|color_mapper:color_instance|font_pokeB:comb_231
 addr[0] => Decoder0.IN9
 addr[1] => Decoder0.IN8
 addr[2] => Decoder0.IN7
@@ -90116,7 +90150,7 @@ data[6] <= <GND>
 data[7] <= <GND>
 
 
-|lab8|color_mapper:color_instance|font_grass:comb_231
+|lab8|color_mapper:color_instance|font_grass:comb_232
 addr[0] => Decoder0.IN8
 addr[1] => Decoder0.IN7
 addr[2] => Decoder0.IN6
@@ -90136,7 +90170,7 @@ data[6] <= <GND>
 data[7] <= <GND>
 
 
-|lab8|color_mapper:color_instance|font_player_image:comb_232
+|lab8|color_mapper:color_instance|font_player_image:comb_233
 addr[0] => Decoder0.IN8
 addr[1] => Decoder0.IN7
 addr[2] => Decoder0.IN6
@@ -90180,7 +90214,7 @@ data[22] <= Selector1.DB_MAX_OUTPUT_PORT_TYPE
 data[23] <= Selector0.DB_MAX_OUTPUT_PORT_TYPE
 
 
-|lab8|color_mapper:color_instance|font_boulder:comb_233
+|lab8|color_mapper:color_instance|font_boulder:comb_234
 addr[0] => Decoder0.IN8
 addr[1] => Decoder0.IN7
 addr[2] => Decoder0.IN6
@@ -90208,7 +90242,7 @@ data[6] <= <GND>
 data[7] <= <GND>
 
 
-|lab8|color_mapper:color_instance|font_start:comb_234
+|lab8|color_mapper:color_instance|font_start:comb_235
 addr[0] => Mux0.IN131088
 addr[1] => Mux0.IN131087
 addr[2] => Mux0.IN131086

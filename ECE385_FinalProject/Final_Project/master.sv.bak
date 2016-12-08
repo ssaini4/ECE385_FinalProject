@@ -1,0 +1,12 @@
+module font_master ( input Clk, output[9:0] i);
+
+logic[9:0] m = i + 1;
+if (m == 5050)
+begin
+i <= 0
+end
+else
+begin
+i <= m
+end
+endmodule

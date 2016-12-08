@@ -130,9 +130,10 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 	logic start_on;
 	
 	logic [1:0] winner = 2'b10;
+	logic [9:0] i = 0;
 
 	font_winner(.Clk(Clk),.keycode(keycode),.winner(winner));
-
+	font_master(.Clk(Clk),.i(i),.t(i));
 	font_rock (.addr(rock_addr), .data(rock_data));
 	font_cut (.addr(cut_addr), .data(cut_data));
 	font_paper (.addr(paper_addr), .data(paper_data));
@@ -372,18 +373,30 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 						Red <= 8'hff;
 						Green <= 8'h00;
 						Blue<= 8'h00;
+						if (i == 5000)
+						begin
+						scene <= 2'b10;
+						end
 					end
 					if (winner == 2'b01 && keycode == 8'h2c)
 					begin
 						Red <= 8'h00;
 						Green <= 8'h00;
 						Blue<= 8'hff;
+						if (i == 5000)
+						begin
+						scene <= 2'b10;
+						end
 					end
 					if (winner == 2'b11 && keycode == 8'h2c)
 					begin
 						Red <= 8'h00;
 						Green <= 8'hff;
 						Blue<= 8'h00;
+						if (i == 5000)
+						begin
+						scene <= 2'b10;
+						end
 					end
 			  end
 		endcase
