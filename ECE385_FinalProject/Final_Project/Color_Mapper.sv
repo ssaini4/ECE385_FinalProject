@@ -37,15 +37,11 @@ module  color_mapper ( input        [9:0] BallX, BallY, DrawX, DrawY, Ball_size,
 parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA344,24'h62A643,24'hFF0000,24'h2F0200,24'h3A0300,24'h4C0300,24'h5E3017,24'hA15622,24'h98531A,24'h97490C,24'h904709,24'h8E4008,24'h632300,24'h672600,24'h943908,24'hBD6116,24'h8C4505,24'h963C01, 24'hF83800, 24'hF0D0B0, 24'h503000, 24'hFFE0A8, 24'h0058F8, 24'hFCFCFC, 24'hBCBCBC, 24'hA40000, 24'hD82800, 24'hFC7460, 24'hFCBCB0, 24'hF0BC3C, 24'hAEACAE, 24'h363301, 24'h6C6C01, 24'hBBBD00, 24'h88D500, 24'h398802, 24'h65B0FF, 24'h155ED8, 24'h800080, 24'h24188A,24'hFFFFFF
 };
 
-    int DistX, DistY, Size;
-	 assign DistX = DrawX - BallX;
-    assign DistY = DrawY - BallY;
-    assign Size = 20;
+
 	logic player_on;
 	logic[1:0] scene;
 	logic boulder_on;
-	 logic[8:0] player_x = 300;
-	 logic[8:0] player_y = 200;
+
 	 logic[8:0] player_size_x = 14;
 	 logic[8:0] player_size_y = 20;
 	
@@ -59,11 +55,11 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 	 logic[8:0] grass_size_y = 20;
 	 logic[8:0] grass_addr;
 	 logic[7:0] grass_data;
-	 
-	 logic[8:0] poke_size_x = 30;
-	 logic[8:0] poke_size_y = 30;
+
 	 logic[8:0] poke_addr;
-	 logic[23:0] poke_data;
+	 logic[7:0] poke_data;
+ 	 logic[7:0] pokeB_data;
+
 	 
 	 
 	 logic pokemonA_on;
@@ -128,23 +124,38 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 	assign executeX = 280;
 	assign executeY = 250;
 	
+	logic [19:0] start_addr;
+	logic[7:0] start_data;
+	logic start_on;
+	
 	font_rock (.addr(rock_addr), .data(rock_data));
 	font_cut (.addr(cut_addr), .data(cut_data));
 	font_paper (.addr(paper_addr), .data(paper_data));
 	font_run (.addr(run_addr), .data(run_data));
 	font_execute (.addr(execute_addr), .data(execute_data));
-	 font_poke (.addr(pokemonA_addr), .data(poke_data));				
-	 assign scene = 2'b10;
+	font_pokeA (.addr(pokemonA_addr), .data(poke_data));	
+	font_pokeB (.addr(pokemonB_addr), .data(pokeB_data));
+	assign scene = 2'b00;
 	 
-	 font_grass (.addr(grass_addr), .data(grass_data));
-	 
-	 font_player_image (.addr(player_addr), .data(player_data_24bit), .keycode(keycode[7:0]));
+	font_grass (.addr(grass_addr), .data(grass_data)); 
+	font_player_image (.addr(player_addr), .data(player_data_24bit), .keycode(keycode[7:0]));
 		
-	 font_boulder (.addr(boulder_addr), .data(boulder_data));
-	
+	font_boulder (.addr(boulder_addr), .data(boulder_data));
+	font_start (.addr(start_addr), .data(start_data));
 	always_ff @(posedge Clk)
 	begin:Game_scene
 		case (scene)
+			2'b00:
+					begin
+						if( DrawX>= 30 && DrawX < 540 && DrawY >=30 && DrawY < 240)
+						begin
+							start_addr = (DrawY-30)*210+DrawX-30;
+							start_on = 1'b1;
+						end
+						else
+							start_on = 1'b0;
+					end
+			
 			2'b01:
 				begin
 					if (DrawX >= BallX && DrawX < BallX + player_size_x && DrawY >= BallY && DrawY < BallY + player_size_y)
@@ -182,7 +193,7 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 					if (DrawX >= PokeAX && DrawX < (PokeAX + pokemon_size_x )&& DrawY >= PokeAY && DrawY < (PokeAY + pokemon_size_y))
 					begin
 						pokemonA_on <= 1'b1;
-						pokemonA_addr <= ((DrawY%30)*30 + DrawX%30)%899;
+						pokemonA_addr <= (DrawY%30)*30 + DrawX%30;
 					end
 					if (DrawX >= PokeBX && DrawX < (PokeBX + pokemon_size_x) && DrawY >= PokeBY && DrawY < (PokeBY + pokemon_size_y))
 					begin
@@ -243,6 +254,21 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
     always_ff @ (posedge Clk)
     begin:RGB_Display
 		case(scene)
+			2'b00:
+					begin
+							if(start_on==1'b1)
+							begin
+								Red <= palette_hex[start_data][23:16];
+								Green <= palette_hex[start_data][15:8];
+								Blue <= palette_hex[start_data][7:0];
+							end
+							else
+							begin
+								Red <= 8'hff;
+								Green <= 8'hff;
+								Blue <= 8'hff;
+							end
+					end
 			2'b01: 
 				  begin
 						if(player_on == 1'b1 && player_data_24bit != 24'hff260 && player_data_24bit !=  24'hff00)
@@ -301,15 +327,15 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 					end
 					if( pokemonA_on == 1'b1)
 					begin
-						Red <= poke_data[23:16];
-						Green <= poke_data[15:8];
-						Blue<= poke_data[7:0];
+						Red <= palette_hex[poke_data][23:16];
+						Green <= palette_hex[poke_data][15:8];
+						Blue<= palette_hex[poke_data][7:0];
 					end
 					if( pokemonB_on == 1'b1)
 					begin
-						Red <= poke_data[23:16];
-						Green <= poke_data[15:8];
-						Blue<= poke_data[7:0];
+						Red <= palette_hex[poke_data][23:16];
+						Green <= palette_hex[poke_data][15:8];
+						Blue<= palette_hex[poke_data][7:0];
 					end
 			  end
 		endcase
