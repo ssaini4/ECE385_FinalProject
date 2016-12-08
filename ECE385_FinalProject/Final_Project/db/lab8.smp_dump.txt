@@ -1,4 +1,18 @@
 
+State Machine - |lab8|color_mapper:color_instance|font_winner:comb_223|p2value
+Name p2value.00 p2value.10 p2value.01 p2value.11 
+p2value.11 0 0 0 0 
+p2value.01 0 0 1 1 
+p2value.10 0 1 0 1 
+p2value.00 1 0 0 1 
+
+State Machine - |lab8|color_mapper:color_instance|font_winner:comb_223|p1value
+Name p1value.00 p1value.10 p1value.01 p1value.11 
+p1value.11 0 0 0 0 
+p1value.01 0 0 1 1 
+p1value.10 0 1 0 1 
+p1value.00 1 0 0 1 
+
 State Machine - |lab8|nios_system:nios_system|nios_system_sdram:sdram|m_next
 Name m_next.010000000 m_next.000010000 m_next.000001000 m_next.000000001 
 m_next.000000001 0 0 0 0 

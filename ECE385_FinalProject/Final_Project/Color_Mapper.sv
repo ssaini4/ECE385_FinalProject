@@ -128,6 +128,10 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 	logic[7:0] start_data;
 	logic start_on;
 	
+	logic [1:0] winner = 2'b10;
+
+	font_winner(.Clk(Clk),.keycode(keycode),.winner(winner));
+	
 	font_rock (.addr(rock_addr), .data(rock_data));
 	font_cut (.addr(cut_addr), .data(cut_data));
 	font_paper (.addr(paper_addr), .data(paper_data));
@@ -135,13 +139,12 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 	font_execute (.addr(execute_addr), .data(execute_data));
 	font_pokeA (.addr(pokemonA_addr), .data(poke_data));	
 	font_pokeB (.addr(pokemonB_addr), .data(pokeB_data));
-	assign scene = 2'b00;
+	assign scene = 2'b10;
 	 
 	font_grass (.addr(grass_addr), .data(grass_data)); 
 	font_player_image (.addr(player_addr), .data(player_data_24bit), .keycode(keycode[7:0]));
 		
 	font_boulder (.addr(boulder_addr), .data(boulder_data));
-	font_start (.addr(start_addr), .data(start_data));
 	always_ff @(posedge Clk)
 	begin:Game_scene
 		case (scene)
@@ -295,50 +298,68 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 					Red <= 8'hff;
 					Green<= 8'hff;
 					Blue <= 8'hff;
-					if (rock_on == 1'b1)
+					if (winner == 2'b10 && rock_on == 1'b1)
 					begin
 						Red <= palette_hex[rock_data][23:16];
 						Green<= palette_hex[rock_data][15:8];
 						Blue <= palette_hex[rock_data][7:0];
 					end
-					if(cut_on == 1'b1)
+					if(winner == 2'b10 && cut_on == 1'b1)
 					begin
 						Red <= palette_hex[cut_data][23:16];
 						Green<= palette_hex[cut_data][15:8];
 						Blue <= palette_hex[cut_data][7:0];
 					end
-					if( paper_on == 1'b1)
+					if(winner == 2'b10 && paper_on == 1'b1)
 					begin
 						Red <= palette_hex[paper_data][23:16];
 						Green <= palette_hex[paper_data][15:8];
 						Blue <= palette_hex[paper_data][7:0];
 					end
-					if( run_on == 1'b1)
+					if(winner == 2'b10 && run_on == 1'b1)
 					begin
 						Red <= palette_hex[run_data][23:16];
 						Green<= palette_hex[run_data][15:8];
 						Blue <= palette_hex[run_data][7:0];
 					end
-					if( execute_on == 1'b1)
+					if(winner == 2'b10 && execute_on == 1'b1)
 					begin
 						Red <= palette_hex[execute_data][23:16];
 						Green <= palette_hex[execute_data][15:8];
 						Blue<= palette_hex[execute_data][7:0];
 					end
-					if( pokemonA_on == 1'b1)
+					if(winner == 2'b10 && pokemonA_on == 1'b1)
 					begin
 						Red <= palette_hex[poke_data][23:16];
 						Green <= palette_hex[poke_data][15:8];
 						Blue<= palette_hex[poke_data][7:0];
 					end
-					if( pokemonB_on == 1'b1)
+					if(winner == 2'b10 && pokemonB_on == 1'b1)
 					begin
 						Red <= palette_hex[poke_data][23:16];
 						Green <= palette_hex[poke_data][15:8];
 						Blue<= palette_hex[poke_data][7:0];
+					end
+					if (winner == 2'b00)
+					begin
+						Red <= 8'hff;
+						Green <= 8'h00;
+						Blue<= 8'h00;
+					end
+					if (winner == 2'b01)
+					begin
+						Red <= 8'h00;
+						Green <= 8'h00;
+						Blue<= 8'hff;
+					end
+					if (winner == 2'b11)
+					begin
+						Red <= 8'h00;
+						Green <= 8'hff;
+						Blue<= 8'h00;
 					end
 			  end
 		endcase
     end 
-    
+   
 endmodule
