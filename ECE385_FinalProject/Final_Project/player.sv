@@ -6,7 +6,7 @@ module font_player (
 
 logic [9:0] player_X_Pos, player_X_Motion, player_Y_Pos, player_Y_Motion, player_Size;
 	 
-    parameter [9:0] player_X_Center=320;  // Center position on the X axis
+    parameter [9:0] player_X_Center=310;  // Center position on the X axis
     parameter [9:0] player_Y_Center=240;  // Center position on the Y axis
     parameter [9:0] player_X_Min=0;       // Leftmost point on the X axis
     parameter [9:0] player_X_Max=639;     // Rightmost point on the X axis

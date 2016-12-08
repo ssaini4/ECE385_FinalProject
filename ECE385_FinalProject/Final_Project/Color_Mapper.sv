@@ -17,7 +17,7 @@
 
 module  color_mapper ( input        [9:0] BallX, BallY, DrawX, DrawY, Ball_size,
 								input Clk,input reset_n,
-								input [7:0] keycode,
+								input [7:0] keycode,input second,
                        output logic [7:0]  Red, Green, Blue, input [7:0]prev_display,
 								output [7:0] display);
     
@@ -40,7 +40,7 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 
 
 	logic player_on;
-	logic[1:0] scene=2'b10;
+	logic[1:0] scene=2'b00;
 	logic boulder_on;
 
 	 logic[8:0] player_size_x = 14;
@@ -56,7 +56,8 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 	 logic[8:0] grass_size_y = 20;
 	 logic[8:0] grass_addr;
 	 logic[7:0] grass_data;
-
+	logic [8:0] grass2_addr;
+	logic [7:0] grass2_data;
 	 logic[8:0] poke_addr;
 	 logic[7:0] poke_data;
  	 logic[7:0] pokeB_data;
@@ -140,13 +141,14 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 	font_execute (.addr(execute_addr), .data(execute_data));
 	font_pokeA (.addr(pokemonA_addr), .data(poke_data));	
 	font_pokeB (.addr(pokemonB_addr), .data(pokeB_data));
-	
 	font_grass (.addr(grass_addr), .data(grass_data)); 
 	font_player_image (.addr(player_addr), .data(player_data_24bit), .keycode(keycode[7:0]));
-
 	font_boulder (.addr(boulder_addr), .data(boulder_data));
 	font_start (.addr(start_addr), .data(start_data));
+	grass2(.addr(grass2_addr), .data(grass2_data));
 	logic [1:0]scene3 = 2'b10;
+	logic [2:0] sum,oldsum;
+	logic blinkon;
 	always_ff @(posedge Clk)
 	begin:Game_scene
 		
@@ -168,13 +170,20 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 				begin
 					if ((BallX+BallY+7)%100 < 2)
 					begin
-						scene = 2'b10;
+						sum = oldsum+second;
+						blinkon = 1'b1;
+						if(sum == 4)
+							scene = 2'b10;
+						oldsum = sum;
 					end
+					else
+						blinkon = 1'b0;
 					if (DrawX >= BallX && DrawX < BallX + player_size_x && DrawY >= BallY && DrawY < BallY + player_size_y)
 					begin
 						player_on = 1'b1;
 						player_addr = ((DrawY-BallY)*14 + DrawX-BallX+1);
 						grass_addr = ((DrawY%grass_size_y*grass_size_y + DrawX%grass_size_x) % 399);
+						grass2_addr = ((DrawY%grass_size_y*grass_size_y + DrawX%grass_size_x) % 399);
 					end
 					else if ((DrawX >= 0 && DrawX < 400 && DrawY >= 60 && DrawY <79) || (DrawX >=500 && DrawX <640 && DrawY >=200 && DrawY <219)
 								|| (DrawX>=0 && DrawX <300 && DrawY>= 300 && DrawY < 319) || (DrawX>=440&& DrawX<459 && DrawY >=340 && DrawY<399)
@@ -184,13 +193,18 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 						boulder_on = 1'b1;
 						boulder_addr = ((DrawY%20*20) + DrawX%20)%399;
 						grass_addr = ((DrawY%grass_size_y*grass_size_y + DrawX%grass_size_x)%399);
+						grass2_addr = ((DrawY%grass_size_y*grass_size_y + DrawX%grass_size_x) % 399);
+
 					end
 					else
 					begin
+						
 						player_on = 1'b0;
 						boulder_on = 1'b0;
 						player_addr = 9'b0;
 						grass_addr = ((DrawY%grass_size_y*grass_size_y + DrawX%grass_size_x)%399);
+						grass2_addr = ((DrawY%grass_size_y*grass_size_y + DrawX%grass_size_x) % 399);
+
 					end
 				end
 			2'b10:
@@ -259,7 +273,7 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 						execute_on <= 1'b1;
 						execute_addr <= ((DrawY-executeY)*60 + DrawX-executeX);
 					end
-					if (keycode == 8'h2c)
+					if (keycode == 8'h2c && second == 1'b1)
  					begin
  						scene = 2'b01;
  					end
@@ -309,9 +323,26 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 	
 						if(player_on == 1'b1 && player_data_24bit != 24'hff260 && player_data_24bit !=  24'hff00)
 						begin
-							Red <= player_data_24bit[23:16];
-							Green <=  player_data_24bit[15:8];
-							Blue <=  player_data_24bit[7:0];
+							
+							begin
+								if (blinkon==1'b1)begin
+									if(second == 0)begin
+									Red <= player_data_24bit[23:16];
+									Green <=  player_data_24bit[15:8];
+									Blue <=  player_data_24bit[7:0];
+									end
+									else begin
+									Red <= player_data_24bit[23:16]-70;
+									Green <=  player_data_24bit[15:8]+80;
+									Blue <=  player_data_24bit[7:0]+90;
+									end
+								end
+								else begin
+									Red <= player_data_24bit[23:16];
+									Green <=  player_data_24bit[15:8];
+									Blue <=  player_data_24bit[7:0];
+								end
+							end
 						end
 						else if(boulder_on == 1'b1 && boulder_data !=  24'hff00)
 						begin
@@ -321,9 +352,16 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 						end
 						else
 						begin 
+							if(second==1'b1 && ((DrawY-20)+(DrawX-20))%20 < (10*second) )begin
 							Red <= palette_hex[grass_data][23:16];
-							Green <= palette_hex[grass_data][15:8];
-							Blue <= palette_hex[grass_data][7:0];
+							Green <=  palette_hex[grass_data][15:8];
+							Blue <=  palette_hex[grass_data][7:0];
+							end
+							else begin
+							Red <= palette_hex[grass2_data][23:16];
+							Green <=  palette_hex[grass2_data][15:8];
+							Blue <=  palette_hex[grass2_data][7:0];
+							end
 						end
 				  end      
 			2'b10:

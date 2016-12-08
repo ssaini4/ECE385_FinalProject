@@ -1,17 +1,17 @@
 module	delay_1s(output delay,input CLOCK_50);
 
-reg	[25:0] count;
+reg	[20:0] count;
 always @(posedge CLOCK_50)
 begin
-	if(count==26'd49_999_999)
+	if(count==21'h1000000)
 	begin
 		count<=26'd0;
-		delay<=1;
+		delay<=1'b1;
 	end
 	else
 	begin
 		count<=count+1;
-		delay<=0;
+		delay<=1'b0;
 	end
 end
 endmodule

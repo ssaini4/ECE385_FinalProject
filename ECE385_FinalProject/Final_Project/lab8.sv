@@ -52,7 +52,7 @@ module  lab8 		( input         CLOCK_50,
     logic [7:0] display,p_display;
 	 assign Clk = CLOCK_50;
     assign {Reset_h}=~ (KEY[0]);  // The push buttons are active low
-	
+	wire second;
 	 
 	 wire [1:0] hpi_addr;
 	 wire [15:0] hpi_data_in, hpi_data_out;
@@ -138,9 +138,11 @@ module  lab8 		( input         CLOCK_50,
 	 .keycode(keycode[7:0]),
 	 .display(display),
 	 .prev_display(p_display),
-	 .reset_n(reset_reset_n)
+	 .reset_n(reset_reset_n), .second(second)
 	 );
-		
+	
+	slowClock(.clk(Clk), .clk_1Hz(second), .reset(reset_reset_n));
+
 	
 	
 	 HexDriver hex_inst_0 (display[7:4], HEX3);
