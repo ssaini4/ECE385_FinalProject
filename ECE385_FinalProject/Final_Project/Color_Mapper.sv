@@ -67,8 +67,8 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 	 logic pokemonB_on;
 	 logic[8:0] pokemon_size_x = 30;
 	 logic[8:0] pokemon_size_y = 30;
-	 logic[8:0] pokemonA_addr;
-	 logic[8:0] pokemonB_addr;
+	 logic[9:0] pokemonA_addr;
+	 logic[9:0] pokemonB_addr;
 	 
 	
 	logic[9:0] RockAX, RockAY, RockBX, RockBY, PokeAX,PokeAY, PokeBX, PokeBY, paperAX, paperAY, paperBX, paperBY, cutAX, cutAY, cutBX, cutBY, runAX, runAY, runBX, runBY, executeX, executeY;
@@ -119,8 +119,8 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 	
 	logic[8:0] execute_size_x = 60;
 	logic[8:0] execute_size_y = 20;
-	logic[11:0] execute_addr;
-	logic[7:0] execute_data;
+	logic[10:0] execute_addr;
+	logic execute_data;
 	logic execute_on;
 	assign executeX = 280;
 	assign executeY = 250;
@@ -130,9 +130,9 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 	logic start_on;
 	
 	logic [1:0] winner = 2'b10;
-
+	logic [12:0] i = 0;
 	font_winner(.Clk(Clk),.keycode(keycode),.winner(winner));
-
+	font_master(.Clk(Clk),.i(i),.t(i));
 	font_rock (.addr(rock_addr), .data(rock_data));
 	font_cut (.addr(cut_addr), .data(cut_data));
 	font_paper (.addr(paper_addr), .data(paper_data));
@@ -146,6 +146,7 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 		
 	font_boulder (.addr(boulder_addr), .data(boulder_data));
 	font_start (.addr(start_addr), .data(start_data));
+	logic [1:0]scene3 = 2'b10;
 	
 
 	always_ff @(posedge Clk)
@@ -201,12 +202,12 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 					if (DrawX >= PokeAX && DrawX < (PokeAX + pokemon_size_x )&& DrawY >= PokeAY && DrawY < (PokeAY + pokemon_size_y))
 					begin
 						pokemonA_on <= 1'b1;
-						pokemonA_addr <= (DrawY%30)*30 + DrawX%30;
+						pokemonA_addr <= (DrawY-PokeAY)*30 + DrawX-PokeAX;
 					end
 					if (DrawX >= PokeBX && DrawX < (PokeBX + pokemon_size_x) && DrawY >= PokeBY && DrawY < (PokeBY + pokemon_size_y))
 					begin
 						pokemonB_on <= 1'b1;
-						pokemonB_addr <= ((DrawY%30*30) + DrawX%20)%899;
+						pokemonB_addr <= ((DrawY-PokeBY)*30 + DrawX-PokeBX);
 					end
 					if (DrawX >=RockAX && DrawX < (RockAX + rock_size_x) && DrawY >= RockAY && DrawY < (RockAY + rock_size_y))
 					begin
@@ -253,10 +254,14 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 					if (DrawX >=executeX && DrawX < (executeX + execute_size_x )&& DrawY >=executeY && DrawY < (executeY + execute_size_y))
 					begin
 						execute_on <= 1'b1;
-						execute_addr <= ((DrawY-executeY)*20 + DrawX-executeX);
+						execute_addr <= ((DrawY-executeY)*60 + DrawX-executeX);
 					end
 					if(keycode == 8'h28)
 							scene = 2'b10;
+					else if (i == 2000 & keycode == 8'h2c)
+ 					begin
+ 						scene = 2'b01;
+ 					end
 				end	
 	endcase
 	case(keycode)
@@ -351,9 +356,18 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 					end
 					if(execute_on == 1'b1)
 					begin
-						Red <= palette_hex[execute_data][23:16];
-						Green <= palette_hex[execute_data][15:8];
-						Blue<= palette_hex[execute_data][7:0];
+						if( execute_data == 1'b0)
+							begin
+								Red <= 8'h88;
+								Green <= 8'h00;
+								Blue <= 8'h15;
+							end
+						else
+							begin
+								Red <= 8'hff;
+								Green <= 8'hff;
+								Blue <= 8'hff;
+							end
 					end
 					if(pokemonA_on == 1'b1)
 					begin
@@ -372,18 +386,21 @@ parameter [0:43][23:0] palette_hex = {24'h8DC43E,24'h83C141,24'h5BA344,24'h5DA34
 						Red <= 8'hff;
 						Green <= 8'h00;
 						Blue<= 8'h00;
+						
 					end
 					if (winner == 2'b01 && keycode == 8'h2c)
 					begin
 						Red <= 8'h00;
 						Green <= 8'h00;
 						Blue<= 8'hff;
+					
 					end
 					if (winner == 2'b11 && keycode == 8'h2c)
 					begin
 						Red <= 8'h00;
 						Green <= 8'hff;
 						Blue<= 8'h00;
+						
 					end
 			  end
 		endcase
